@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Vina+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/global.css">
-    <script src="./API.js"></script>
+    <link rel="stylesheet" href="./css/search/searchResults.css">
+    <script type="module" src="./API.js"></script>
     <title>Document</title>
 </head>
 
@@ -33,12 +34,19 @@
             </div>
         </nav>
         <div class="search-box">
-            <input type="text" placeholder="search album/artist">
-            <i class="bi bi-search"></i>
+            <form id="search-form">
+                <input type="text" placeholder="search album/artist" id="search-input">
+                <i class="bi bi-search"></i>
+            </form>
         </div>
     </header>
     <main>
-        <div class="albums-list" id="albums-list">
+        <div class="main-search">
+            <form action="">
+                <input type="text" placeholder="search album/artist" id="main-search-input">
+            </form>
+        </div>
+        <div class="search-box-result" id="search-box-result">
 
         </div>
     </main>

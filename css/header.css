@@ -34,6 +34,9 @@ header nav div h1:hover {
 .search-box {
   margin-left: 70rem;
   margin-top: -0.5rem;
+}
+
+form {
   display: flex;
   flex-direction: row;
 }

@@ -9,10 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Vina+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/global.css">
-    <link rel="stylesheet" href="./css/tracks.css">
-    <script src="./UI.js"></script>
-    <script src="./API.js"></script>
-    <script src="./app.js"></script>
+    <link rel="stylesheet" href="./css/home/tracks.css">
+    <script type="module" src="./API.js"></script>
     <title>Document</title>
 </head>
 
@@ -36,15 +34,18 @@
             </div>
         </nav>
         <div class="search-box">
-            <input type="text" placeholder="search album/artist">
-            <i class="bi bi-search"></i>
+            <form id="search-form">
+                <input type="text" placeholder="search album/artist" id="search-input">
+                <i class="bi bi-search"></i>
+            </form>
         </div>
     </header>
     <main>
+        <div id="albums-carrousel">
+
+        </div>
         <div class="tracks" id="tracks">
         </div>
-
-        <img src="" alt="">
     </main>
 </body>
 

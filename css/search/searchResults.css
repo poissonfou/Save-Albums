@@ -1,0 +1,24 @@
+.main-search input {
+  width: 70%;
+  height: 2.8rem;
+  border-radius: 5px;
+  margin-left: 12rem;
+  margin-top: 5rem;
+  box-shadow: 5px 0px 1rem black;
+  padding-top: 0.5rem;
+}
+
+.main-search input::placeholder {
+  font-size: 1.5rem;
+}
+
+.search-box-result {
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  top: 50%;
+  width: 60rem;
+  height: 100%;
+  margin-left: 12rem;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5rem black;
+}
