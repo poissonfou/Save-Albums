@@ -10,15 +10,16 @@
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/global.css">
     <link rel="stylesheet" href="./css/home/tracks.css">
-    <script type="module" src="./API.js"></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="./css/search/searchResults.css">
+    <script type="module" src="./JSFiles/App.js"></script>
+    <title>Home</title>
 </head>
 
 <body>
     <header>
         <nav>
             <div>
-                <a href="./index.html">
+                <a href="./home.html">
                     <h1>Home</h1>
                 </a>
             </div>
@@ -34,13 +35,13 @@
             </div>
         </nav>
         <div class="search-box">
-            <form id="search-form">
+            <form id="search-form" onload="App.sendSearch(event)">
                 <input type="text" placeholder="search album/artist" id="search-input">
                 <i class="bi bi-search"></i>
             </form>
         </div>
     </header>
-    <main>
+    <main id="main-site">
         <div id="albums-carrousel">
 
         </div>
