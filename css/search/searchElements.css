@@ -17,8 +17,9 @@
   position: absolute;
   top: 50%;
   width: 60rem;
-  height: 100%;
+  height: fit-content;
   margin-left: 12rem;
   border-radius: 5px;
   box-shadow: 5px 5px 5rem black;
+  padding-bottom: 0.5rem;
 }

@@ -1,8 +1,3 @@
-export let mainSearch = `  <div class="main-search">
-<form action="">
-    <input type="text" placeholder="search album/artist" id="main-search-input">
-</form>
-</div>`;
+export let albums = ` <div id="albums-carrousel"></div>`;
 
-export let searchBoxResult = `<div class="search-box-result" id="search-box-result">
-</div>`;
+export let tracks = `  <div class="tracks" id="tracks"></div>`;

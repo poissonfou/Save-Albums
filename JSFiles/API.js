@@ -17,7 +17,10 @@ export const APIController = (function () {
 
   const _getAlbum = async (id, token) => {
     const result = await fetch(`https://api.spotify.com/v1/albums/${id}`, {
-      Authorization: "Bearer " + token,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     const data = await result.json();
     return data;
@@ -25,7 +28,10 @@ export const APIController = (function () {
 
   const _getAlbumTracks = async (id, token) => {
     const result = await fetch(`//api.spotify.com/v1/albums/${id}/tracks`, {
-      Authorization: "Bearer " + token,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     const data = await result.json();
     return data.items;
@@ -45,9 +51,12 @@ export const APIController = (function () {
     return data;
   };
 
-  const _getArtist = async (id) => {
+  const _getArtist = async (id, token) => {
     const result = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
-      Authorization: "Bearer " + token,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     const data = await result.json();
     return data;
@@ -66,8 +75,8 @@ export const APIController = (function () {
     search(q, token) {
       return _search(q, token);
     },
-    getArtist(id) {
-      return _getArtist(id);
+    getArtist(id, token) {
+      return _getArtist(id, token);
     },
   };
 })();
