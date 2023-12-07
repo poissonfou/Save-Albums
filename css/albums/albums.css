@@ -1,0 +1,59 @@
+.albums {
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  top: 50%;
+  width: 60rem;
+  height: fit-content;
+  margin-left: 12rem;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5rem black;
+  padding-bottom: 0.5rem;
+}
+
+.empty-msg {
+  font-size: 5rem;
+  margin-left: 16rem;
+  margin-top: 7rem;
+}
+
+.item-box {
+  display: flex;
+  flex-direction: row;
+  font-size: 2rem;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.item-box img {
+  margin-right: 0.7rem;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info div {
+  display: flex;
+  flex-direction: row;
+}
+
+.info div p:nth-child(1) {
+  width: 12rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.info div p:nth-child(2) {
+  margin-left: 0.5rem;
+}
+
+.artists-names {
+  margin-top: -1.5rem;
+  font-size: 1.5rem;
+  color: red;
+}

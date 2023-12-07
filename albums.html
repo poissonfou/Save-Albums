@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Vina+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/global.css">
-    <script src="./JSFiles/App.js"></script>
+    <link rel="stylesheet" href="./css/albums/albums.css">
+    <script type="module" src="./JSFiles/App.js"></script>
     <title>Albums</title>
 </head>
 
@@ -33,12 +34,14 @@
             </div>
         </nav>
         <div class="search-box">
-            <input type="text" placeholder="search album/artist">
-            <i class="bi bi-search"></i>
+            <form id="search-form">
+                <input type="text" placeholder="search album/artist" id="search-input">
+                <i class="bi bi-search"></i>
+            </form>
         </div>
     </header>
     <main id="main-section">
-        <div class="albums-list" id="albums-list">
+        <div class="albums" id="albums-list">
 
         </div>
     </main>

@@ -1,38 +1,81 @@
-.item-box {
+.item-box-artists,
+.item-box-albums {
   display: flex;
   flex-direction: row;
+  justify-content: stretch;
   font-size: 2rem;
   margin-top: 0.5rem;
   margin-left: 0.5rem;
 }
 
-.item-box img {
+.item-box-artists div {
+  margin-top: 3rem;
+}
+
+.item-box-artists img,
+.item-box-albums img {
   margin-right: 0.7rem;
   width: 150px;
   height: 150px;
   object-fit: cover;
 }
 
-.name {
+.item-box-artists i {
   margin-top: 3rem;
-  width: 28rem;
+  margin-left: 20rem;
 }
 
-.item-box i {
+.item-box-albums i {
   margin-top: 3rem;
   margin-left: 15rem;
 }
 
-.item-box i:hover {
+.item-box-artists i:hover,
+.item-box-albums i:hover {
   cursor: pointer;
+}
+
+.item-box-artists p {
+  width: 12rem;
+  margin-top: 3rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info div {
+  display: flex;
+  flex-direction: row;
+}
+
+.info div p:nth-child(1) {
+  width: 12rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.info div p:nth-child(2) {
+  margin-left: 0.5rem;
+}
+
+.artists-names {
+  margin-top: -1.5rem;
+  font-size: 1.5rem;
+  color: red;
+  width: 15rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .no-result {
   font-size: 5rem;
   margin-left: 16rem;
   margin-top: 7rem;
-}
-
-.id-item {
-  visibility: hidden;
 }

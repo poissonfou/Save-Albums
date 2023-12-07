@@ -1,7 +1,9 @@
-export let mainSearch = `  <div class="main-search">
-<form action="">
+export let mainSearch = `  
+<div class="main-search">
+  <h1>Search</h1>
+  <form action="" id="main-form">
     <input type="text" placeholder="search album/artist" id="main-search-input">
-</form>
+  </form>
 </div>`;
 
 export let searchBoxResult = `<div class="search-box-result" id="search-box-result">

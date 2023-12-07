@@ -1,11 +1,20 @@
+.main-search h1 {
+  margin-bottom: 0.5rem;
+  margin-left: 36rem;
+  font-size: 4rem;
+  color: red;
+}
+
 .main-search input {
   width: 70%;
   height: 2.8rem;
   border-radius: 5px;
   margin-left: 12rem;
-  margin-top: 5rem;
+  margin-top: 0rem;
   box-shadow: 5px 0px 1rem black;
   padding-top: 0.5rem;
+  font-size: 1.5rem;
+  padding-top: 0;
 }
 
 .main-search input::placeholder {
@@ -16,10 +25,32 @@
   background-color: rgb(255, 255, 255);
   position: absolute;
   top: 50%;
-  width: 60rem;
+  width: 50rem;
   height: fit-content;
-  margin-left: 12rem;
+  margin-left: 17rem;
   border-radius: 5px;
   box-shadow: 5px 5px 5rem black;
   padding-bottom: 0.5rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.header div {
+  margin-top: 3rem;
+  background-color: red;
+  border-radius: 5px;
+  height: 0.1rem;
+  width: 75%;
+}
+
+.header h1 {
+  color: red;
+  font-size: 3.5rem;
+  margin-left: 0rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
