@@ -45,6 +45,24 @@ export const App = (function (UIController, APIController) {
     UIController.displaySavedArtists();
   };
 
+  const _moveCarrousel = (parentIdx, classes) => {
+    let elements = document.querySelectorAll(".album-item");
+    console.log(elements[parentIdx]);
+
+    elements[parentIdx].classList.add("focused-album");
+    if ([...classes].includes("next-album")) {
+      elements[parentIdx].classList.remove("next-album");
+    } else {
+      elements[parentIdx].classList.remove("last-album");
+    }
+
+    //Think about it like an array!!!
+  };
+
+  const _getCarrousel = () => {
+    UIController.loadAlbumsCarrousel();
+  };
+
   return {
     sendSearch(input, isLoaded) {
       return _sendSearch(input, isLoaded);
@@ -60,6 +78,12 @@ export const App = (function (UIController, APIController) {
     },
     getSavedArtists() {
       return _getSavedArtists();
+    },
+    moveCarrousel(parentIdx, classes) {
+      return _moveCarrousel(parentIdx, classes);
+    },
+    getCarrousel() {
+      return _getCarrousel();
     },
   };
 })(UIController, APIController);
@@ -81,5 +105,21 @@ if (window.location.pathname.endsWith("artists.html")) {
   window.addEventListener("load", (e) => {
     e.preventDefault();
     App.getSavedArtists();
+  });
+}
+
+if (window.location.pathname.endsWith("home.html")) {
+  App.getCarrousel();
+}
+
+if (localStorage.getItem("albums")) {
+  document.querySelectorAll(".displayed").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      App.moveCarrousel(
+        e.target.parentElement.id,
+        e.target.parentElement.classList
+      );
+    });
   });
 }

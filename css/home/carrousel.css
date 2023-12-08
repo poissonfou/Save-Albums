@@ -1,0 +1,54 @@
+#albums-carrousel {
+  display: flex;
+  flex-direction: row;
+  height: 16rem;
+  width: 50rem;
+  margin-top: 5rem;
+  margin-left: 17rem;
+  overflow: hidden;
+  padding-top: 0.5rem;
+}
+
+#albums-carrousel div {
+  margin-left: 1rem;
+}
+
+#albums-carrousel h2 {
+  margin-bottom: 1rem;
+  margin-left: 4.1rem;
+  display: none;
+}
+
+#albums-carrousel img {
+  transform: translateY(0px);
+  transition: 1s;
+}
+
+#albums-carrousel img:hover {
+  cursor: pointer;
+  transform: translateY(-7px);
+  transition: 1s;
+}
+
+.hidden {
+  display: none;
+}
+
+.focused-album img {
+  height: 15rem;
+  width: 15rem;
+  display: block;
+  box-shadow: 5px 4px 1rem red;
+}
+
+.next-album img {
+  height: 9rem;
+  width: 9rem;
+  display: block;
+}
+
+.last-album img {
+  height: 5rem;
+  width: 5rem;
+  display: block;
+}

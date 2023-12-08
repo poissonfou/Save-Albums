@@ -172,6 +172,42 @@ export const UIController = (function () {
     document.getElementById("search-box-result").innerHTML = "";
   };
 
+  const _loadAlbumsCarrousel = () => {
+    let html;
+    let carrouselDiv = document.getElementById("albums-carrousel");
+    if (localStorage.getItem("albums")) {
+      let albums = JSON.parse(localStorage.getItem("albums"));
+      let nodeId = 0;
+      for (let album of albums) {
+        let picture = album.images.find((el) => el.width == 300);
+        if (picture == undefined) continue;
+        html = `
+        <div class="album-item hidden" id="${nodeId}">
+          <img src="${picture.url}" id="${album.id}" alt="${album.name}">
+          <h2>${album.name}</h2>
+        </div>
+        `;
+        carrouselDiv.insertAdjacentHTML("beforeend", html);
+        nodeId++;
+      }
+      let elements = document.querySelectorAll(".hidden");
+      let middle = Math.floor(elements.length / 2);
+
+      elements[middle].classList.add("focused-album");
+
+      for (let i = middle - 2; i <= middle + 2; i++) {
+        elements[i].classList.remove("hidden");
+        elements[i].classList.add("displayed");
+        if (i == middle) continue;
+        if (i == middle - 1 || i == middle + 1) {
+          elements[i].classList.add("next-album");
+        } else {
+          elements[i].classList.add("last-album");
+        }
+      }
+    }
+  };
+
   return {
     displayTracks(tracks, img) {
       return _displayTracks(tracks, img);
@@ -193,6 +229,9 @@ export const UIController = (function () {
     },
     refreshSearch() {
       return _refreshSearch();
+    },
+    loadAlbumsCarrousel() {
+      return _loadAlbumsCarrousel();
     },
   };
 })();
