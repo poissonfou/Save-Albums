@@ -3,20 +3,6 @@ import { albums, tracks } from "../Components/HomeComponents.js";
 import { App } from "./App.js";
 
 export const UIController = (function () {
-  const _displayTracks = (tracks, img) => {
-    let tracksDiv = document.querySelectorAll("#tracks");
-    let html;
-    tracks.forEach((x) => {
-      html = `
-                  <div>
-                      <img src="${img[0].url}" alt="Album cover">
-                      <p>${x.name}</p>
-                  </div>
-              `;
-      tracksDiv.appendChild(html);
-    });
-  };
-
   const _displaySearch = (result) => {
     let html;
     let displayResultDiv = document.getElementById("search-box-result");
@@ -74,7 +60,7 @@ export const UIController = (function () {
         html = `
             <div  class="item-box-artists">
                 <img src="${picture.url}" alt="Artist's image">
-                <p>${item.name}</p>
+                <p title="${item.name}">${item.name}</p>
                 <div>
                   <i class="bi bi-plus-circle artist" id="${item.id}"></i>
                 </div>
@@ -98,10 +84,11 @@ export const UIController = (function () {
     if (localStorage.getItem("albums")) {
       let albums = JSON.parse(localStorage.getItem("albums"));
       for (let album of albums) {
-        let singers = [];
+        let singersArr = [];
         album.artists.forEach((artist) => {
-          singers.push(artist.name);
+          singersArr.push(artist.name);
         });
+        let singers = singersArr.toString();
         let picture = album.images.find((el) => el.width == 300);
         if (picture == undefined) continue;
         let year = album.release_date.slice(0, 4);
@@ -110,10 +97,10 @@ export const UIController = (function () {
               <img src="${picture.url}" alt="Album cover">
               <div class="info">
                 <div>
-                 <p>${album.name}</p>
+                 <p title="${album.name}">${album.name}</p>
                  <p>(${year})</p>
                 </div>
-               <p class="artists-names">${singers.toString()}</p>
+               <p class="artists-names" title="${singers}">${singers}</p>
               </div>
              
           </div>
@@ -138,8 +125,8 @@ export const UIController = (function () {
         if (picture == undefined) continue;
         html = `
           <div class="item-box">
-              <img src="${picture.url}" alt="Album cover">
-              <p>${artist.name}</p>
+              <img src="${picture.url}" alt="Artist's picture">
+              <p title="${artist.name}">${artist.name}</p>
           </div>
           `;
         displayResultDiv.insertAdjacentHTML("beforeend", html);
@@ -180,8 +167,8 @@ export const UIController = (function () {
         if (picture == undefined) continue;
         html = `
         <div class="album-item hidden" id="${storageIdx}">
-          <img src="${picture.url}" id="${album.id}" alt="${album.name}">
-          <h2 class="hidden-title">${album.name}</h2>
+          <img src="${picture.url}" id="${album.id}" alt="${album.name}" title="${album.name}">
+          <h2 class="hidden-title" title="${album.name}">${album.name}</h2>
         </div>
         `;
         carrouselDiv.insertAdjacentHTML("beforeend", html);
@@ -191,11 +178,29 @@ export const UIController = (function () {
       let middle = Math.floor(elements.length / 2);
 
       elements[middle].classList.add("focused-album");
-      elements[middle].children.item(1).classList = "title-display";
+
+      let title = elements[middle].children.item(1);
+      let titleLength = title.textContent.length;
+      title.classList = "title-display";
+
+      if (titleLength <= 5) {
+        title.style.marginLeft = "6.3rem";
+      }
+      if (titleLength >= 5 && titleLength <= 15) {
+        title.style.marginLeft = "4rem";
+      }
+      if (titleLength >= 15) {
+        title.style.marginLeft = "1.5rem";
+      }
+      if (titleLength >= 19) {
+        title.style.marginLeft = "0.5rem";
+      }
+      if (titleLength >= 22) {
+        title.classList.add("truncate-title");
+      }
 
       if (elements.length == 1) {
-        document.getElementsByClassName("focused-album")[0].style.marginLeft =
-          "17rem";
+        elements[middle].style.marginLeft = "17rem";
       }
 
       if (elements.length == 2 || elements.length == 3) {
@@ -214,19 +219,55 @@ export const UIController = (function () {
         }
       }
 
-      return elements[middle].children.item(0).id;
+      let id = elements[middle].children.item(0).id;
+      let img = elements[middle].children.item(0).getAttribute("src");
+
+      return {
+        id,
+        img,
+      };
     }
   };
 
-  const _loadTracks = (tracks) => {
+  const _loadTracks = (tracks, albumImg) => {
     console.log(tracks);
     let html;
+    let singersArr;
+    let singers;
+    let duration;
+    let seconds;
+    let explicit;
+
     let divTracks = document.getElementById("tracks");
     divTracks.innerHTML = "";
+
     for (let track of tracks) {
+      singers = "";
+      singersArr = [];
+      track.artists.forEach((artist) => {
+        singersArr.push(artist.name);
+      });
+      singers = singersArr.toString();
+      duration = new Date(track.duration_ms);
+
+      if (duration.getSeconds().toString().length == 1) {
+        seconds = "0" + duration.getSeconds();
+      } else {
+        seconds = duration.getSeconds();
+      }
+
+      if (track.explicit) {
+        explicit = `<i class="bi bi-explicit"></i>`;
+      }
       html = `
       <div>
-        <h2>${track.name}</h2>
+        <div class="title-track">
+        <img class="album-img" src=${albumImg}>
+         <h2 title="${track.name}">${track.name}</h2>
+         <p> - ${duration.getMinutes()}:${seconds}</p>
+         ${track.explicit ? `<i class="bi bi-explicit"></i>` : ""}
+        </div>
+        <h3 title="${singers}" class="singers">${singers}</h3>
       </div>
       `;
       divTracks.insertAdjacentHTML("beforeend", html);
@@ -234,9 +275,6 @@ export const UIController = (function () {
   };
 
   return {
-    displayTracks(tracks, img) {
-      return _displayTracks(tracks, img);
-    },
     displaySearch(result) {
       return _displaySearch(result);
     },
@@ -255,8 +293,8 @@ export const UIController = (function () {
     loadAlbumsCarrousel() {
       return _loadAlbumsCarrousel();
     },
-    loadTracks(tracks) {
-      return _loadTracks(tracks);
+    loadTracks(tracks, albumImg) {
+      return _loadTracks(tracks, albumImg);
     },
   };
 })();

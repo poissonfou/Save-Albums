@@ -17,7 +17,12 @@
   display: block;
   color: red;
   font-size: 2rem;
-  margin-left: 0.3rem;
+}
+
+.truncate-title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #albums-carrousel img {

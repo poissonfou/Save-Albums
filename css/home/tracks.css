@@ -3,10 +3,45 @@
   position: absolute;
   top: 90%;
   width: 55rem;
-  height: 100%;
+  height: fit-content;
   margin-left: 15rem;
   border-radius: 5px;
   box-shadow: 5px 5px 5rem black;
+  padding-top: 0.5rem;
+}
+
+.bi-explicit {
+  margin-top: 1.6rem;
+  margin-left: 0.5rem;
+}
+
+.album-img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 5px;
+}
+
+.singers {
+  color: red;
+  margin-top: -1.5rem;
+  margin-left: 6rem;
+}
+
+.title-track {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0;
+  margin-left: 0.5rem;
+}
+
+.title-track p {
+  font-size: 1.3rem;
+  margin-top: 1.4rem;
+  margin-left: 0.5rem;
+}
+
+.title-track h2 {
+  margin-left: 0.5rem;
 }
 
 #no-album-box {

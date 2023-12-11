@@ -45,7 +45,7 @@ export const App = (function (UIController, APIController) {
     UIController.displaySavedArtists();
   };
 
-  const _moveCarrousel = async (id, parentIdx) => {
+  const _moveCarrousel = async (id, parentIdx, img) => {
     let classSets = {
       focused_album: "album-item displayed focused-album",
       next_album: "album-item displayed next-album",
@@ -58,7 +58,25 @@ export const App = (function (UIController, APIController) {
     document.getElementsByClassName("title-display")[0].classList =
       "hidden-title";
 
-    elements[parentIdx].children.item(1).classList = "title-display";
+    let title = elements[parentIdx].children.item(1);
+    let titleLength = title.textContent.length;
+    title.classList = "title-display";
+
+    if (titleLength <= 5) {
+      title.style.marginLeft = "6.3rem";
+    }
+    if (titleLength >= 5 && titleLength <= 15) {
+      title.style.marginLeft = "4rem";
+    }
+    if (titleLength >= 15) {
+      title.style.marginLeft = "1.5rem";
+    }
+    if (titleLength >= 19) {
+      title.style.marginLeft = "0.5rem";
+    }
+    if (titleLength >= 22) {
+      title.classList.add("truncate-title");
+    }
 
     for (let i = parentIdx - 4; i <= parentIdx + 4; i++) {
       if (!elements[i]) continue;
@@ -84,14 +102,14 @@ export const App = (function (UIController, APIController) {
 
     let token = await APIController.getToken();
     let tracks = await APIController.getAlbumTracks(id, token);
-    UIController.loadTracks(tracks);
+    UIController.loadTracks(tracks, img);
   };
 
   const _getCarrousel = async () => {
-    let id = UIController.loadAlbumsCarrousel();
+    let { id, img } = UIController.loadAlbumsCarrousel();
     let token = await APIController.getToken();
     let tracks = await APIController.getAlbumTracks(id, token);
-    UIController.loadTracks(tracks);
+    UIController.loadTracks(tracks, img);
   };
 
   return {
@@ -110,8 +128,8 @@ export const App = (function (UIController, APIController) {
     getSavedArtists() {
       return _getSavedArtists();
     },
-    moveCarrousel(id, parentIdx) {
-      return _moveCarrousel(id, parentIdx);
+    moveCarrousel(id, parentIdx, img) {
+      return _moveCarrousel(id, parentIdx, img);
     },
     getCarrousel() {
       return _getCarrousel();
@@ -145,7 +163,11 @@ if (window.location.pathname.endsWith("home.html")) {
     document.querySelectorAll(".album-item").forEach((el) => {
       el.addEventListener("click", (e) => {
         e.preventDefault();
-        App.moveCarrousel(e.target.id, Number(e.target.parentElement.id));
+        App.moveCarrousel(
+          e.target.id,
+          Number(e.target.parentElement.id),
+          e.target.src
+        );
       });
     });
   } else {
