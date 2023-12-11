@@ -1,7 +1,7 @@
 #albums-carrousel {
   display: flex;
   flex-direction: row;
-  height: 16rem;
+  height: 20rem;
   width: 50rem;
   margin-top: 5rem;
   margin-left: 17rem;
@@ -9,14 +9,15 @@
   padding-top: 0.5rem;
 }
 
-#albums-carrousel div {
+#albums-carrousel .album-item {
   margin-left: 1rem;
 }
 
-#albums-carrousel h2 {
-  margin-bottom: 1rem;
-  margin-left: 4.1rem;
-  display: none;
+.title-display {
+  display: block;
+  color: red;
+  font-size: 2rem;
+  margin-left: 0.3rem;
 }
 
 #albums-carrousel img {
@@ -30,8 +31,10 @@
   transition: 1s;
 }
 
-.hidden {
+.hidden,
+.hidden-title {
   display: none;
+  transition: 1s;
 }
 
 .focused-album img {
@@ -39,16 +42,19 @@
   width: 15rem;
   display: block;
   box-shadow: 5px 4px 1rem red;
+  transition: 1s;
 }
 
 .next-album img {
   height: 9rem;
   width: 9rem;
   display: block;
+  transition: 1s;
 }
 
 .last-album img {
   height: 5rem;
   width: 5rem;
   display: block;
+  transition: 1s;
 }

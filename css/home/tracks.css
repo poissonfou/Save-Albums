@@ -1,10 +1,39 @@
 .tracks {
   background-color: rgb(255, 255, 255);
   position: absolute;
-  top: 80%;
+  top: 90%;
   width: 55rem;
   height: 100%;
   margin-left: 15rem;
   border-radius: 5px;
   box-shadow: 5px 5px 5rem black;
+}
+
+#no-album-box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-left: 15rem;
+}
+
+#no-album-box h1 {
+  color: red;
+  font-size: 5rem;
+}
+
+#no-album-box button {
+  border: none;
+  border-radius: 5px;
+  box-shadow: -5px -5px 0rem red;
+  height: 3rem;
+  font-family: "Vina Sans", "sans-serif";
+  font-size: 1.5rem;
+  background-color: rgb(247, 250, 245);
+  transition: 1s;
+}
+
+#no-album-box button:hover {
+  cursor: pointer;
+  background-color: rgb(243, 225, 225);
+  transition: 1s;
 }

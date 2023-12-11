@@ -6,5 +6,8 @@ export let mainSearch = `
   </form>
 </div>`;
 
-export let searchBoxResult = `<div class="search-box-result" id="search-box-result">
-</div>`;
+export let searchBoxResult = `
+<div class="search-box-result" id="search-box-result">
+  <h1 class="std-msg">Search an Album/Artist</h1>
+</div>
+`;

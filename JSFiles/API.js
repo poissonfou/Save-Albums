@@ -38,12 +38,15 @@ export const APIController = (function () {
 
   const _getAlbumTracks = async (id, token) => {
     try {
-      const result = await fetch(`//api.spotify.com/v1/albums/${id}/tracks`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const result = await fetch(
+        `https://api.spotify.com/v1/albums/${id}/tracks`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await result.json();
       return data.items;
     } catch (error) {

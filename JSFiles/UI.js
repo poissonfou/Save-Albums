@@ -20,6 +20,7 @@ export const UIController = (function () {
   const _displaySearch = (result) => {
     let html;
     let displayResultDiv = document.getElementById("search-box-result");
+    displayResultDiv.innerHTML = "";
 
     if (!result.albums.items.length && !result.artists.items.length) {
       html = `<h1 class="no-result">No result found</h1>`;
@@ -144,7 +145,7 @@ export const UIController = (function () {
         displayResultDiv.insertAdjacentHTML("beforeend", html);
       }
     } else {
-      html = `<h1 class="no-result">No albums saved</h1>`;
+      html = `<h1 class="no-result">No artists saved</h1>`;
       displayResultDiv.insertAdjacentHTML("beforeend", html);
     }
   };
@@ -168,34 +169,41 @@ export const UIController = (function () {
     main.insertAdjacentHTML("beforeend", tracks);
   };
 
-  const _refreshSearch = () => {
-    document.getElementById("search-box-result").innerHTML = "";
-  };
-
   const _loadAlbumsCarrousel = () => {
     let html;
     let carrouselDiv = document.getElementById("albums-carrousel");
     if (localStorage.getItem("albums")) {
       let albums = JSON.parse(localStorage.getItem("albums"));
-      let nodeId = 0;
+      let storageIdx = 0;
       for (let album of albums) {
         let picture = album.images.find((el) => el.width == 300);
         if (picture == undefined) continue;
         html = `
-        <div class="album-item hidden" id="${nodeId}">
+        <div class="album-item hidden" id="${storageIdx}">
           <img src="${picture.url}" id="${album.id}" alt="${album.name}">
-          <h2>${album.name}</h2>
+          <h2 class="hidden-title">${album.name}</h2>
         </div>
         `;
         carrouselDiv.insertAdjacentHTML("beforeend", html);
-        nodeId++;
+        storageIdx++;
       }
       let elements = document.querySelectorAll(".hidden");
       let middle = Math.floor(elements.length / 2);
 
       elements[middle].classList.add("focused-album");
+      elements[middle].children.item(1).classList = "title-display";
+
+      if (elements.length == 1) {
+        document.getElementsByClassName("focused-album")[0].style.marginLeft =
+          "17rem";
+      }
+
+      if (elements.length == 2 || elements.length == 3) {
+        carrouselDiv.style.paddingLeft = "7rem";
+      }
 
       for (let i = middle - 2; i <= middle + 2; i++) {
+        if (!elements[i]) continue;
         elements[i].classList.remove("hidden");
         elements[i].classList.add("displayed");
         if (i == middle) continue;
@@ -205,6 +213,23 @@ export const UIController = (function () {
           elements[i].classList.add("last-album");
         }
       }
+
+      return elements[middle].children.item(0).id;
+    }
+  };
+
+  const _loadTracks = (tracks) => {
+    console.log(tracks);
+    let html;
+    let divTracks = document.getElementById("tracks");
+    divTracks.innerHTML = "";
+    for (let track of tracks) {
+      html = `
+      <div>
+        <h2>${track.name}</h2>
+      </div>
+      `;
+      divTracks.insertAdjacentHTML("beforeend", html);
     }
   };
 
@@ -227,11 +252,11 @@ export const UIController = (function () {
     loadHome() {
       return _loadHome();
     },
-    refreshSearch() {
-      return _refreshSearch();
-    },
     loadAlbumsCarrousel() {
       return _loadAlbumsCarrousel();
+    },
+    loadTracks(tracks) {
+      return _loadTracks(tracks);
     },
   };
 })();
