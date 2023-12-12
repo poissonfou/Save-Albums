@@ -3,15 +3,19 @@ import { UIController } from "./UI.js";
 import { APIController } from "./API.js";
 
 export const App = (function (UIController, APIController) {
-  const _sendSearch = async (val, isLoaded) => {
+  const _sendSearch = async (val, isLoaded, previous) => {
     if (!isLoaded) {
-      UIController.unloadHome();
+      UIController.loadSearchEls(previous);
     }
     if (val !== "") {
       let token = await APIController.getToken();
       let result = await APIController.search(val, token);
       UIController.displaySearch(result);
+      history.pushState({}, "Search", "search.html");
     }
+    window.addEventListener("popstate", () => {
+      window.location.href = previous;
+    });
   };
 
   const _saveItems = async (data, isAlbum) => {
@@ -113,8 +117,8 @@ export const App = (function (UIController, APIController) {
   };
 
   return {
-    sendSearch(input, isLoaded) {
-      return _sendSearch(input, isLoaded);
+    sendSearch(input, isLoaded, previous) {
+      return _sendSearch(input, isLoaded, previous);
     },
     saveItems(data, type) {
       return _saveItems(data, type);
@@ -140,7 +144,7 @@ export const App = (function (UIController, APIController) {
 document.getElementById("search-form").addEventListener("submit", (e) => {
   e.preventDefault();
   let input = document.getElementById("search-input");
-  App.sendSearch(input.value, false);
+  App.sendSearch(input.value, false, window.location.pathname);
 });
 
 if (window.location.pathname.endsWith("albums.html")) {

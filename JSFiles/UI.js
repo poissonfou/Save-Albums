@@ -137,23 +137,17 @@ export const UIController = (function () {
     }
   };
 
-  const _unloadHome = () => {
+  const _loadSearchEls = (previous) => {
     let main = document.getElementById("main-section");
     main.innerHTML = "";
     main.insertAdjacentHTML("beforeend", mainSearch);
     main.insertAdjacentHTML("beforeend", searchBoxResult);
+
     document.getElementById("main-form").addEventListener("submit", (e) => {
       e.preventDefault();
       let input = document.getElementById("main-search-input");
-      App.sendSearch(input.value, true);
+      App.sendSearch(input.value, true, previous);
     });
-  };
-
-  const _loadHome = () => {
-    let main = document.getElementById("main-section");
-    main.innerHTML = "";
-    main.insertAdjacentHTML("beforeend", albums);
-    main.insertAdjacentHTML("beforeend", tracks);
   };
 
   const _loadAlbumsCarrousel = () => {
@@ -195,7 +189,7 @@ export const UIController = (function () {
       if (titleLength >= 19) {
         title.style.marginLeft = "0.5rem";
       }
-      if (titleLength >= 22) {
+      if (titleLength >= 21) {
         title.classList.add("truncate-title");
       }
 
@@ -318,11 +312,8 @@ export const UIController = (function () {
     displaySavedArtists() {
       return _displaySavedArtists();
     },
-    unloadHome() {
-      return _unloadHome();
-    },
-    loadHome() {
-      return _loadHome();
+    loadSearchEls(previous) {
+      return _loadSearchEls(previous);
     },
     loadAlbumsCarrousel() {
       return _loadAlbumsCarrousel();
