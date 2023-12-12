@@ -15,6 +15,21 @@
   margin-left: 0.5rem;
 }
 
+.bi-pause,
+.bi-play-fill {
+  background-color: transparent;
+  position: absolute;
+  z-index: 10;
+  font-size: 3rem;
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.bi-pause:hover,
+.bi-play-fill:hover {
+  cursor: pointer;
+}
+
 .album-img {
   width: 5rem;
   height: 5rem;

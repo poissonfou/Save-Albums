@@ -39,7 +39,6 @@
 .hidden,
 .hidden-title {
   display: none;
-  transition: 1s;
 }
 
 .focused-album img {

@@ -236,7 +236,9 @@ export const UIController = (function () {
     let singers;
     let duration;
     let seconds;
-    let explicit;
+    let isPlayable = true;
+    let play;
+    let pause;
 
     let divTracks = document.getElementById("tracks");
     divTracks.innerHTML = "";
@@ -256,12 +258,17 @@ export const UIController = (function () {
         seconds = duration.getSeconds();
       }
 
-      if (track.explicit) {
-        explicit = `<i class="bi bi-explicit"></i>`;
-      }
       html = `
       <div>
         <div class="title-track">
+        ${
+          track.preview_url
+            ? `    
+        <i class="bi bi-play-fill"></i>
+        <i class="bi bi-pause hidden"></i>
+        `
+            : (isPlayable = "")
+        }
         <img class="album-img" src=${albumImg}>
          <h2 title="${track.name}">${track.name}</h2>
          <p> - ${duration.getMinutes()}:${seconds}</p>
@@ -271,6 +278,33 @@ export const UIController = (function () {
       </div>
       `;
       divTracks.insertAdjacentHTML("beforeend", html);
+    }
+
+    if (isPlayable) {
+      play = [...document.querySelectorAll(".bi-play-fill")];
+      pause = [...document.querySelectorAll(".bi-pause")];
+      let song;
+
+      for (let i = 0; i < play.length; i++) {
+        play[i].addEventListener("click", () => {
+          play[i].classList.add("hidden");
+          pause[i].classList.remove("hidden");
+          song = new Audio(tracks[i].preview_url);
+          song.play();
+          setTimeout(() => {
+            pause[i].classList.add("hidden");
+            play[i].classList.remove("hidden");
+          }, 30000);
+        });
+      }
+
+      for (let i = 0; i < pause.length; i++) {
+        pause[i].addEventListener("click", () => {
+          pause[i].classList.add("hidden");
+          play[i].classList.remove("hidden");
+          song.pause();
+        });
+      }
     }
   };
 
