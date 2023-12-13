@@ -18,7 +18,7 @@ export const UIController = (function () {
       </div>
       `;
       displayResultDiv.insertAdjacentHTML("beforeend", headerAlbums);
-      console.log(result);
+
       for (let item of result.albums.items) {
         let singersArr = [];
         item.artists.forEach((artist) => {
@@ -128,9 +128,7 @@ export const UIController = (function () {
           localStorage.setItem(
             "redirect",
             JSON.stringify({
-              spotifyId: e.target.classList[0],
               idx: e.target.id,
-              albumCover: e.target.classList[1],
             })
           );
           window.location.href = "home.html";
@@ -160,20 +158,26 @@ export const UIController = (function () {
         );
         if (picture == undefined) continue;
 
+        let idx = 0;
         albums.forEach((el) => {
-          if (el.artists[0].name == artist.name) artistsAlbums.push(el);
+          console.log(el);
+          if (el.artists[0].name == artist.name)
+            artistsAlbums.push({ album: el, idx: idx });
+          idx++;
         });
 
         for (let i = 0; i < artistsAlbums.length; i++) {
-          let picture = artistsAlbums[i].images.find((el) => el.width == 300);
+          let picture = artistsAlbums[i].album.images.find(
+            (el) => el.width == 300
+          );
           html = `
           <div class="album">
             <div>
              <img src="${picture.url}">
-             <p>${artistsAlbums[i].name}</p>
+             <p>${artistsAlbums[i].album.name}</p>
             </div>
             <div class="button-home">
-              <button class="${artistsAlbums[i].id} ${picture.url}">Go to album</button>
+              <button class="redirect-home" id="${artistsAlbums[i].idx}">Go to album</button>
             </div>
           </div>
           `;
@@ -237,6 +241,20 @@ export const UIController = (function () {
           hideAlbums[i].classList.add("hidden");
           showAlbums[i].classList.remove("hidden");
           divAlbums[i].classList.add("hidden");
+        });
+      }
+
+      let redirectButtons = [...document.querySelectorAll(".redirect-home")];
+
+      for (let i = 0; i < redirectButtons.length; i++) {
+        redirectButtons[i].addEventListener("click", (e) => {
+          localStorage.setItem(
+            "redirect",
+            JSON.stringify({
+              idx: e.target.id,
+            })
+          );
+          window.location.href = "home.html";
         });
       }
 
@@ -325,13 +343,11 @@ export const UIController = (function () {
       }
 
       for (let i = middle - 2; i <= middle + 2; i++) {
-        console.log(middle, i);
         if (!elements[i]) continue;
         elements[i].classList.remove("hidden");
         elements[i].classList.add("displayed");
         if (i == middle) continue;
         if (i == middle - 1 || i == middle + 1) {
-          console.log(elements[i]);
           elements[i].classList.add("next-album");
         }
         if (i == middle - 2 || i == middle + 2) {
@@ -350,7 +366,8 @@ export const UIController = (function () {
   };
 
   const _loadTracks = (tracks, albumImg) => {
-    console.log(tracks);
+    localStorage.setItem("isPlaying", false);
+
     let html;
     let singersArr;
     let singers;
@@ -422,11 +439,28 @@ export const UIController = (function () {
         play[i].addEventListener("click", () => {
           play[i].classList.add("hidden");
           pause[i].classList.remove("hidden");
-          song = new Audio(tracks[i].preview_url);
-          song.play();
+          if (localStorage.getItem("isPlaying") == "false") {
+            song = new Audio(tracks[i].preview_url);
+            song.play();
+            localStorage.setItem(
+              "isPlaying",
+              JSON.stringify({ idx: i, song: song })
+            );
+          } else {
+            let audioInfo = JSON.parse(localStorage.getItem("isPlaying"));
+            song.pause();
+            pause[audioInfo.idx].classList.add("hidden");
+            play[audioInfo.idx].classList.remove("hidden");
+
+            song = new Audio(tracks[i].preview_url);
+            song.play();
+            localStorage.setItem("isPlaying", JSON.stringify({ idx: i, song }));
+          }
+
           setTimeout(() => {
             pause[i].classList.add("hidden");
             play[i].classList.remove("hidden");
+            localStorage.setItem("isPlaying", false);
           }, 30000);
         });
       }

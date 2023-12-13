@@ -207,8 +207,5 @@ if (
       );
     });
   });
-
-  // let albumInfo = JSON.parse(localStorage.getItem("redirect"));
-  // App.moveCarrousel(albumInfo.spotifyId, albumInfo.idx, albumInfo.albumCover);
   localStorage.setItem("redirect", false);
 }
