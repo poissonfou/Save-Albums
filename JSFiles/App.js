@@ -161,7 +161,10 @@ if (window.location.pathname.endsWith("artists.html")) {
   });
 }
 
-if (window.location.pathname.endsWith("home.html")) {
+if (
+  window.location.pathname.endsWith("home.html") &&
+  localStorage.getItem("redirect") == "false"
+) {
   if (localStorage.getItem("albums")) {
     App.getCarrousel();
     document.querySelectorAll(".album-item").forEach((el) => {
@@ -184,7 +187,28 @@ if (window.location.pathname.endsWith("home.html")) {
     `;
     carrouselDiv.insertAdjacentHTML("beforeend", html);
     document.getElementById("add").addEventListener("click", () => {
-      App.sendSearch("", false);
+      App.sendSearch("", false, window.location.pathname);
     });
   }
+}
+
+if (
+  window.location.pathname.endsWith("home.html") &&
+  localStorage.getItem("redirect") !== "false"
+) {
+  App.getCarrousel();
+  document.querySelectorAll(".album-item").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      App.moveCarrousel(
+        e.target.id,
+        Number(e.target.parentElement.id),
+        e.target.src
+      );
+    });
+  });
+
+  // let albumInfo = JSON.parse(localStorage.getItem("redirect"));
+  // App.moveCarrousel(albumInfo.spotifyId, albumInfo.idx, albumInfo.albumCover);
+  localStorage.setItem("redirect", false);
 }

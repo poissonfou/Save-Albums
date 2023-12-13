@@ -1,5 +1,4 @@
 import { mainSearch, searchBoxResult } from "../Components/SearchComponents.js";
-import { albums, tracks } from "../Components/HomeComponents.js";
 import { App } from "./App.js";
 
 export const UIController = (function () {
@@ -81,6 +80,7 @@ export const UIController = (function () {
   const _displaySavedAlbums = () => {
     let html;
     let displayResultDiv = document.getElementById("albums-list");
+    let idx = 0;
     if (localStorage.getItem("albums")) {
       let albums = JSON.parse(localStorage.getItem("albums"));
       for (let album of albums) {
@@ -102,11 +102,40 @@ export const UIController = (function () {
                 </div>
                <p class="artists-names" title="${singers}">${singers}</p>
               </div>
-             
+             <div class="redirect">
+               <div class="button-home">
+                 <button class="${album.id} ${picture.url}" id="${idx}">Go to album</button>
+               </div>
+               <div class="spotify-link">
+                <h4>Listen on</h4>
+                <i class="bi bi-spotify" id=${album.external_urls.spotify}></i>
+               </div>
+             </div>
           </div>
           `;
         displayResultDiv.insertAdjacentHTML("beforeend", html);
+        idx++;
       }
+
+      document.querySelectorAll(".bi-spotify").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          window.location.assign(e.target.id);
+        });
+      });
+
+      document.querySelectorAll("button").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          localStorage.setItem(
+            "redirect",
+            JSON.stringify({
+              spotifyId: e.target.classList[0],
+              idx: e.target.id,
+              albumCover: e.target.classList[1],
+            })
+          );
+          window.location.href = "home.html";
+        });
+      });
     } else {
       html = `<h1 class="no-result">No albums saved</h1>`;
       displayResultDiv.insertAdjacentHTML("beforeend", html);
@@ -115,21 +144,108 @@ export const UIController = (function () {
 
   const _displaySavedArtists = () => {
     let html;
+    let albumsDiv;
     let displayResultDiv = document.getElementById("artists-list");
+
     if (localStorage.getItem("artists")) {
+      let albums = JSON.parse(localStorage.getItem("albums"));
       let artists = JSON.parse(localStorage.getItem("artists"));
+      let artistsAlbums;
+
       for (let artist of artists) {
+        artistsAlbums = [];
+        albumsDiv = [];
         let picture = artist.images.find(
           (el) => el.width == 300 || el.width == 320
         );
         if (picture == undefined) continue;
+
+        albums.forEach((el) => {
+          if (el.artists[0].name == artist.name) artistsAlbums.push(el);
+        });
+
+        for (let i = 0; i < artistsAlbums.length; i++) {
+          let picture = artistsAlbums[i].images.find((el) => el.width == 300);
+          html = `
+          <div class="album">
+            <div>
+             <img src="${picture.url}">
+             <p>${artistsAlbums[i].name}</p>
+            </div>
+            <div class="button-home">
+              <button class="${artistsAlbums[i].id} ${picture.url}">Go to album</button>
+            </div>
+          </div>
+          `;
+          albumsDiv.push(html);
+        }
+
         html = `
           <div class="item-box">
-              <img src="${picture.url}" alt="Artist's picture">
-              <p title="${artist.name}">${artist.name}</p>
+             <div>
+                <img src="${picture.url}" alt="Artist's picture">
+                <p title="${artist.name}">${artist.name}</p>
+             </div>
+              <div class="buttons">
+               <div class="show-albums">
+                <h4>See albums</h4>
+                <i class="bi bi-caret-down"></i>
+                <i class="bi bi-caret-up hidden"></i>
+               </div>
+               <div class="spotify-link">
+                <h4>Listen on</h4>
+                <i class="bi bi-spotify" id=${artist.external_urls.spotify}></i>
+                </div>
+              </div>
+          </div>
+          <div class="albums hidden">
+            ${
+              albumsDiv.length
+                ? albumsDiv
+                : `
+                <div class="no-albums">
+                  <h1>No albums saved</h1>
+                  <button class="add-album" id="${artist.name}">Add Albums</button>
+                </div>
+                `
+            }
           </div>
           `;
         displayResultDiv.insertAdjacentHTML("beforeend", html);
+      }
+
+      document.querySelectorAll(".bi-spotify").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          window.location.assign(e.target.id);
+        });
+      });
+
+      let showAlbums = [...document.querySelectorAll(".bi-caret-down")];
+      let hideAlbums = [...document.querySelectorAll(".bi-caret-up")];
+      let divAlbums = [...document.querySelectorAll(".albums")];
+
+      for (let i = 0; i < showAlbums.length; i++) {
+        showAlbums[i].addEventListener("click", () => {
+          showAlbums[i].classList.add("hidden");
+          hideAlbums[i].classList.remove("hidden");
+          divAlbums[i].classList.remove("hidden");
+        });
+      }
+
+      for (let i = 0; i < hideAlbums.length; i++) {
+        hideAlbums[i].addEventListener("click", () => {
+          hideAlbums[i].classList.add("hidden");
+          showAlbums[i].classList.remove("hidden");
+          divAlbums[i].classList.add("hidden");
+        });
+      }
+
+      let addAlbum = [...document.querySelectorAll(".add-album")];
+
+      for (let i = 0; i < addAlbum.length; i++) {
+        addAlbum[i].addEventListener("click", (e) => {
+          App.sendSearch(e.target.id, false, window.location.pathname);
+        });
       }
     } else {
       html = `<h1 class="no-result">No artists saved</h1>`;
@@ -168,8 +284,15 @@ export const UIController = (function () {
         carrouselDiv.insertAdjacentHTML("beforeend", html);
         storageIdx++;
       }
+
+      let middle;
       let elements = document.querySelectorAll(".hidden");
-      let middle = Math.floor(elements.length / 2);
+      if (localStorage.getItem("redirect") == "false") {
+        middle = Math.floor(elements.length / 2);
+      } else {
+        let albumRedirect = JSON.parse(localStorage.getItem("redirect"));
+        middle = Number(albumRedirect.idx);
+      }
 
       elements[middle].classList.add("focused-album");
 
@@ -202,13 +325,16 @@ export const UIController = (function () {
       }
 
       for (let i = middle - 2; i <= middle + 2; i++) {
+        console.log(middle, i);
         if (!elements[i]) continue;
         elements[i].classList.remove("hidden");
         elements[i].classList.add("displayed");
         if (i == middle) continue;
         if (i == middle - 1 || i == middle + 1) {
+          console.log(elements[i]);
           elements[i].classList.add("next-album");
-        } else {
+        }
+        if (i == middle - 2 || i == middle + 2) {
           elements[i].classList.add("last-album");
         }
       }
@@ -255,24 +381,37 @@ export const UIController = (function () {
       html = `
       <div>
         <div class="title-track">
-        ${
-          track.preview_url
-            ? `    
-        <i class="bi bi-play-fill"></i>
-        <i class="bi bi-pause hidden"></i>
-        `
-            : (isPlayable = "")
-        }
-        <img class="album-img" src=${albumImg}>
-         <h2 title="${track.name}">${track.name}</h2>
-         <p> - ${duration.getMinutes()}:${seconds}</p>
-         ${track.explicit ? `<i class="bi bi-explicit"></i>` : ""}
+          <div>
+           ${
+             track.preview_url
+               ? `    
+           <i class="bi bi-play-fill"></i>
+           <i class="bi bi-pause hidden"></i>
+           `
+               : (isPlayable = "")
+           }
+           <img class="album-img" src=${albumImg}>
+           <h2 title="${track.name}">${track.name}</h2>
+           <p> - ${duration.getMinutes()}:${seconds}</p>
+           ${track.explicit ? `<i class="bi bi-explicit"></i>` : ""}
+          </div>
+          <div class="spotify-link">
+           <h2>Provided by</h2>
+           <i class="bi bi-spotify" id=${track.external_urls.spotify}></i>
+          </div>
         </div>
         <h3 title="${singers}" class="singers">${singers}</h3>
+        
       </div>
       `;
       divTracks.insertAdjacentHTML("beforeend", html);
     }
+
+    document.querySelectorAll(".bi-spotify").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        window.location.assign(e.target.id);
+      });
+    });
 
     if (isPlayable) {
       play = [...document.querySelectorAll(".bi-play-fill")];

@@ -26,8 +26,7 @@ header nav div h1 {
 }
 
 header nav div h1:hover {
-  color: gray;
-
+  color: rgb(241, 241, 241);
   cursor: pointer;
 }
 

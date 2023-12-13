@@ -25,7 +25,13 @@
   margin-top: 0.5rem;
 }
 
+.bi-spotify {
+  color: #1ed760;
+  font-size: 2rem;
+}
+
 .bi-pause:hover,
+.bi-spotify:hover,
 .bi-play-fill:hover {
   cursor: pointer;
 }
@@ -45,8 +51,14 @@
 .title-track {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 0;
   margin-left: 0.5rem;
+}
+
+.title-track div {
+  display: flex;
+  flex-direction: row;
 }
 
 .title-track p {
@@ -57,6 +69,19 @@
 
 .title-track h2 {
   margin-left: 0.5rem;
+}
+
+.spotify-link {
+  margin-right: 2rem;
+  margin-top: 0.5rem;
+}
+
+.spotify-link h2 {
+  margin-right: 0.5rem;
+}
+
+.spotify-link i {
+  margin-top: 0.9rem;
 }
 
 #no-album-box {

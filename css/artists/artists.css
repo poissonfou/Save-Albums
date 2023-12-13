@@ -16,7 +16,8 @@
   margin-top: 7rem;
 }
 
-.item-box {
+.item-box,
+.item-box div:first-child {
   display: flex;
   flex-direction: row;
   font-size: 2rem;
@@ -24,9 +25,116 @@
   margin-left: 0.5rem;
 }
 
+.item-box {
+  justify-content: space-between;
+}
+
 .item-box img {
   margin-right: 0.7rem;
   width: 150px;
   height: 150px;
   object-fit: cover;
+}
+
+.item-box p {
+  margin-top: 3rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  margin-right: 3rem;
+  margin-top: 3rem;
+}
+
+.spotify-link,
+.show-albums {
+  display: flex;
+  flex-direction: row;
+}
+
+.show-albums {
+  margin-right: 1rem;
+}
+
+.show-albums i {
+  margin-left: -0.5rem;
+  margin-top: -0.2rem;
+}
+
+.spotify-link {
+  margin-top: 0.5rem;
+}
+
+.spotify-link h4,
+.show-albums h4 {
+  margin-top: 0;
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.spotify-link i {
+  color: #1ed760;
+  font-size: 2rem;
+  margin-top: -0.2rem;
+}
+
+.spotify-link i:hover,
+.show-albums i:hover {
+  cursor: pointer;
+}
+
+.albums {
+  margin-top: 1rem;
+  margin-left: 15rem;
+}
+
+.album {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 30rem;
+}
+
+.album img {
+  width: 8rem;
+  height: 8rem;
+}
+
+.album p {
+  font-size: 1.5rem;
+  margin-top: 0rem;
+  margin-left: 1rem;
+}
+
+.no-albums button,
+.button-home button {
+  background-color: red;
+  color: white;
+  height: 2.5rem;
+  width: 6rem;
+  border: none;
+  border-radius: 5px;
+  font-family: "Vina Sans", "sans-serif";
+  font-size: 1rem;
+  margin-right: 1rem;
+  margin-top: 2.5rem;
+}
+
+.no-albums button:hover,
+.button-home button:hover {
+  cursor: pointer;
+}
+
+.no-albums {
+  margin-left: 10rem;
+}
+
+.no-albums h1 {
+  font-size: 2rem;
+}
+
+.no-albums button {
+  margin-top: 0;
+  margin-left: 2rem;
 }

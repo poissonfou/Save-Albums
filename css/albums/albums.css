@@ -57,3 +57,49 @@
   font-size: 1.5rem;
   color: red;
 }
+
+.redirect {
+  margin-left: 15rem;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.spotify-link,
+.button-home {
+  display: flex;
+  flex-direction: row;
+}
+
+.spotify-link {
+  margin-top: 0.3rem;
+}
+
+.spotify-link h4 {
+  margin-top: 0;
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.spotify-link i {
+  color: #1ed760;
+  font-size: 2rem;
+  margin-top: -0.2rem;
+}
+
+.button-home button {
+  background-color: red;
+  color: white;
+  height: 2.5rem;
+  width: 6rem;
+  border: none;
+  border-radius: 5px;
+  font-family: "Vina Sans", "sans-serif";
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+
+.spotify-link i:hover,
+.button-home button:hover {
+  cursor: pointer;
+}
