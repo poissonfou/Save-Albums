@@ -145,7 +145,7 @@ export const UIController = (function () {
     let albumsDiv;
     let displayResultDiv = document.getElementById("artists-list");
 
-    if (localStorage.getItem("artists")) {
+    if (JSON.parse(localStorage.getItem("artists")).length) {
       let albums = JSON.parse(localStorage.getItem("albums"));
       let artists = JSON.parse(localStorage.getItem("artists"));
       let artistsAlbums;
@@ -160,7 +160,6 @@ export const UIController = (function () {
 
         let idx = 0;
         albums.forEach((el) => {
-          console.log(el);
           if (el.artists[0].name == artist.name)
             artistsAlbums.push({ album: el, idx: idx });
           idx++;
@@ -200,6 +199,7 @@ export const UIController = (function () {
                 <h4>Listen on</h4>
                 <i class="bi bi-spotify" id=${artist.external_urls.spotify}></i>
                 </div>
+                <button class="delete" id="${artist.name}">Delete</button>
               </div>
           </div>
           <div class="albums hidden">
@@ -265,6 +265,21 @@ export const UIController = (function () {
           App.sendSearch(e.target.id, false, window.location.pathname);
         });
       }
+
+      let deleteButtons = [...document.querySelectorAll(".delete")];
+
+      for (let i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener("click", (e) => {
+          for (let j = 0; j < artists.length; j++) {
+            if (artists[j].name == e.target.id) {
+              artists.splice(j, 1);
+              localStorage.setItem("artists", JSON.stringify(artists));
+              break;
+            }
+          }
+          window.location.href = "artists.html";
+        });
+      }
     } else {
       html = `<h1 class="no-result">No artists saved</h1>`;
       displayResultDiv.insertAdjacentHTML("beforeend", html);
@@ -287,82 +302,83 @@ export const UIController = (function () {
   const _loadAlbumsCarrousel = () => {
     let html;
     let carrouselDiv = document.getElementById("albums-carrousel");
-    if (localStorage.getItem("albums")) {
-      let albums = JSON.parse(localStorage.getItem("albums"));
-      let storageIdx = 0;
-      for (let album of albums) {
-        let picture = album.images.find((el) => el.width == 300);
-        if (picture == undefined) continue;
-        html = `
+    let albums = JSON.parse(localStorage.getItem("albums"));
+    let storageIdx = 0;
+
+    for (let album of albums) {
+      let picture = album.images.find((el) => el.width == 300);
+      if (picture == undefined) continue;
+      html = `
         <div class="album-item hidden" id="${storageIdx}">
           <img src="${picture.url}" id="${album.id}" alt="${album.name}" title="${album.name}">
           <h2 class="hidden-title" title="${album.name}">${album.name}</h2>
         </div>
         `;
-        carrouselDiv.insertAdjacentHTML("beforeend", html);
-        storageIdx++;
-      }
-
-      let middle;
-      let elements = document.querySelectorAll(".hidden");
-      if (localStorage.getItem("redirect") == "false") {
-        middle = Math.floor(elements.length / 2);
-      } else {
-        let albumRedirect = JSON.parse(localStorage.getItem("redirect"));
-        middle = Number(albumRedirect.idx);
-      }
-
-      elements[middle].classList.add("focused-album");
-
-      let title = elements[middle].children.item(1);
-      let titleLength = title.textContent.length;
-      title.classList = "title-display";
-
-      if (titleLength <= 5) {
-        title.style.marginLeft = "6.3rem";
-      }
-      if (titleLength >= 5 && titleLength <= 15) {
-        title.style.marginLeft = "4rem";
-      }
-      if (titleLength >= 15) {
-        title.style.marginLeft = "1.5rem";
-      }
-      if (titleLength >= 19) {
-        title.style.marginLeft = "0.5rem";
-      }
-      if (titleLength >= 21) {
-        title.classList.add("truncate-title");
-      }
-
-      if (elements.length == 1) {
-        elements[middle].style.marginLeft = "17rem";
-      }
-
-      if (elements.length == 2 || elements.length == 3) {
-        carrouselDiv.style.paddingLeft = "7rem";
-      }
-
-      for (let i = middle - 2; i <= middle + 2; i++) {
-        if (!elements[i]) continue;
-        elements[i].classList.remove("hidden");
-        elements[i].classList.add("displayed");
-        if (i == middle) continue;
-        if (i == middle - 1 || i == middle + 1) {
-          elements[i].classList.add("next-album");
-        }
-        if (i == middle - 2 || i == middle + 2) {
-          elements[i].classList.add("last-album");
-        }
-      }
-
-      let id = elements[middle].children.item(0).id;
-      let img = elements[middle].children.item(0).getAttribute("src");
-
-      return {
-        id,
-        img,
-      };
+      carrouselDiv.insertAdjacentHTML("beforeend", html);
+      storageIdx++;
     }
+
+    let middle;
+    let elements = document.querySelectorAll(".album-item");
+    if (localStorage.getItem("redirect") == "false") {
+      middle = Math.floor(elements.length / 2);
+    } else {
+      let albumRedirect = JSON.parse(localStorage.getItem("redirect"));
+      middle = Number(albumRedirect.idx);
+    }
+
+    elements[middle].classList.add("focused-album");
+
+    let title = elements[middle].children.item(1);
+    let titleLength = title.textContent.length;
+    title.classList = "title-display";
+
+    if (titleLength <= 5) {
+      title.style.marginLeft = "6.3rem";
+    }
+    if (titleLength >= 5 && titleLength <= 15) {
+      title.style.marginLeft = "4rem";
+    }
+    if (titleLength >= 15) {
+      title.style.marginLeft = "1.5rem";
+    }
+    if (titleLength >= 19) {
+      title.style.marginLeft = "0.5rem";
+    }
+    if (titleLength >= 21) {
+      title.classList.add("truncate-title");
+    }
+
+    if (elements.length == 1) {
+      elements[middle].style.marginLeft = "17rem";
+    }
+
+    if (elements.length == 2 || elements.length == 3) {
+      carrouselDiv.style.paddingLeft = "7rem";
+    }
+
+    for (let i = middle - 2; i <= middle + 2; i++) {
+      if (!elements[i]) continue;
+      elements[i].classList.remove("hidden");
+      elements[i].classList.add("displayed");
+      if (i == middle) continue;
+      if (i == middle - 1 || i == middle + 1) {
+        elements[i].classList.add("next-album");
+      }
+      if (i == middle - 2 || i == middle + 2) {
+        elements[i].classList.add("last-album");
+      }
+    }
+
+    let id = elements[middle].children.item(0).id;
+    let img = elements[middle].children.item(0).getAttribute("src");
+
+    localStorage.setItem("currentAlbum", elements[middle].id);
+
+    return {
+      id,
+      img,
+    };
   };
 
   const _loadTracks = (tracks, albumImg) => {
@@ -413,7 +429,6 @@ export const UIController = (function () {
            ${track.explicit ? `<i class="bi bi-explicit"></i>` : ""}
           </div>
           <div class="spotify-link">
-           <h2>Provided by</h2>
            <i class="bi bi-spotify" id=${track.external_urls.spotify}></i>
           </div>
         </div>

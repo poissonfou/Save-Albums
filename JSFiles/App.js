@@ -104,16 +104,21 @@ export const App = (function (UIController, APIController) {
       }
     }
 
+    localStorage.setItem("currentAlbum", elements[parentIdx].id);
+
     let token = await APIController.getToken();
     let tracks = await APIController.getAlbumTracks(id, token);
     UIController.loadTracks(tracks, img);
   };
 
   const _getCarrousel = async () => {
+    document.getElementById("tracks").classList.remove("hidden");
     let { id, img } = UIController.loadAlbumsCarrousel();
     let token = await APIController.getToken();
     let tracks = await APIController.getAlbumTracks(id, token);
     UIController.loadTracks(tracks, img);
+
+    document.getElementById("tracks-delete").classList.remove("hidden");
   };
 
   return {
@@ -165,7 +170,7 @@ if (
   window.location.pathname.endsWith("home.html") &&
   localStorage.getItem("redirect") == "false"
 ) {
-  if (localStorage.getItem("albums")) {
+  if (JSON.parse(localStorage.getItem("albums")).length) {
     App.getCarrousel();
     document.querySelectorAll(".album-item").forEach((el) => {
       el.addEventListener("click", (e) => {
@@ -189,6 +194,7 @@ if (
     document.getElementById("add").addEventListener("click", () => {
       App.sendSearch("", false, window.location.pathname);
     });
+    document.getElementById("tracks").classList.add("hidden");
   }
 }
 
@@ -208,4 +214,25 @@ if (
     });
   });
   localStorage.setItem("redirect", false);
+}
+
+if (
+  JSON.parse(localStorage.getItem("albums")).length &&
+  window.location.pathname.endsWith("home.html")
+) {
+  document.getElementsByClassName("delete")[0].addEventListener("click", () => {
+    let idx = Number(localStorage.getItem("currentAlbum"));
+    let albums = JSON.parse(localStorage.getItem("albums"));
+    for (let i = 0; i < albums.length; i++) {
+      if (i == idx) {
+        albums.splice(i, 1);
+        localStorage.setItem("albums", JSON.stringify(albums));
+        break;
+      }
+    }
+    window.location.href = "home.html";
+  });
+  if (!JSON.parse(localStorage.getItem("albums")).length) {
+    document.getElementById("tracks-delete").classList.add("hidden");
+  }
 }
