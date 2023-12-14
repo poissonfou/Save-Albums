@@ -8,7 +8,7 @@ export const App = (function (UIController, APIController) {
       UIController.loadSearchEls(previous);
     }
     if (val !== "") {
-      let token = await APIController.getToken();
+      let token = localStorage.getItem("token");
       let result = await APIController.search(val, token);
       UIController.displaySearch(result);
       history.pushState({}, "Search", "search.html");
@@ -18,26 +18,24 @@ export const App = (function (UIController, APIController) {
     });
   };
 
-  const _saveItems = async (data, isAlbum) => {
-    if (isAlbum) {
-      let albums = JSON.parse(localStorage.getItem("albums") || "[]");
-      albums.push(data);
-      localStorage.setItem("albums", JSON.stringify(albums));
-    } else {
-      let artists = JSON.parse(localStorage.getItem("artists") || "[]");
-      artists.push(data);
-      localStorage.setItem("artists", JSON.stringify(artists));
-    }
-  };
-
-  const _getItems = async (id, isAlbum) => {
-    let token = await APIController.getToken();
+  const _saveItems = async (id, isAlbum) => {
+    let token = localStorage.getItem("token");
     if (isAlbum) {
       let album = await APIController.getAlbum(id, token);
-      App.saveItems(album, isAlbum);
+      let tracks = await APIController.getAlbumTracks(album.id, token);
+
+      let albums = JSON.parse(localStorage.getItem("albums") || "[]");
+      albums.push(album);
+      localStorage.setItem("albums", JSON.stringify(albums));
+
+      let savedTracks = JSON.parse(localStorage.getItem("tracks") || "[]");
+      savedTracks.push([id, tracks]);
+      localStorage.setItem("tracks", JSON.stringify(savedTracks));
     } else {
       let artist = await APIController.getArtist(id, token);
-      App.saveItems(artist, isAlbum);
+      let artists = JSON.parse(localStorage.getItem("artists") || "[]");
+      artists.push(artist);
+      localStorage.setItem("artists", JSON.stringify(artists));
     }
   };
 
@@ -86,7 +84,6 @@ export const App = (function (UIController, APIController) {
       if (!elements[i]) continue;
       if (i == parentIdx) {
         elements[i].classList = classSets.focused_album;
-        continue;
       }
       if (i == parentIdx + 1 || i == parentIdx - 1) {
         elements[i].classList = classSets.next_album;
@@ -100,36 +97,57 @@ export const App = (function (UIController, APIController) {
       if (i == parentIdx + 4 || i == parentIdx - 4) {
         !elements[i].classList.contains("hidden")
           ? (elements[i].classList = classSets.hidden)
-          : console.log("Never gonna give you up, never gonna let you down");
+          : console.log("");
       }
     }
 
     localStorage.setItem("currentAlbum", elements[parentIdx].id);
 
-    let token = await APIController.getToken();
-    let tracks = await APIController.getAlbumTracks(id, token);
+    let savedTracks = JSON.parse(localStorage.getItem("tracks"));
+    console.log(savedTracks);
+    let tracks;
+
+    for (let i = 0; i < savedTracks.length; i++) {
+      if (i == parentIdx) {
+        tracks = savedTracks[i][1];
+        console.log(tracks);
+        break;
+      }
+    }
+
     UIController.loadTracks(tracks, img);
   };
 
   const _getCarrousel = async () => {
     document.getElementById("tracks").classList.remove("hidden");
     let { id, img } = UIController.loadAlbumsCarrousel();
-    let token = await APIController.getToken();
-    let tracks = await APIController.getAlbumTracks(id, token);
-    UIController.loadTracks(tracks, img);
+    let savedTracks = JSON.parse(localStorage.getItem("tracks"));
+    let tracks;
 
+    if (localStorage.getItem("tracks")) {
+      for (let i = 0; i < savedTracks.length; i++) {
+        if (savedTracks[i][0] == id) {
+          tracks = savedTracks[i][1];
+          break;
+        }
+      }
+    }
+
+    UIController.loadTracks(tracks, img);
     document.getElementById("tracks-delete").classList.remove("hidden");
+  };
+
+  const _requestToken = async () => {
+    let token = await APIController.getToken();
+    return token;
   };
 
   return {
     sendSearch(input, isLoaded, previous) {
       return _sendSearch(input, isLoaded, previous);
     },
-    saveItems(data, type) {
-      return _saveItems(data, type);
-    },
-    getItems(id, isAlbum) {
-      return _getItems(id, isAlbum);
+    saveItems(id, isAlbum) {
+      return _saveItems(id, isAlbum);
     },
     getSavedAlbums() {
       return _getSavedAlbums();
@@ -143,8 +161,28 @@ export const App = (function (UIController, APIController) {
     getCarrousel() {
       return _getCarrousel();
     },
+    requestToken() {
+      return _requestToken();
+    },
   };
 })(UIController, APIController);
+
+if (!localStorage.getItem("token")) {
+  (async function () {
+    let token = await App.requestToken();
+    localStorage.setItem("token", token);
+  })();
+}
+
+let delay = 1000 * 60 * 60;
+setInterval(async () => {
+  let token = await App.requestToken();
+  localStorage.setItem("token", token);
+}, delay);
+
+if (localStorage.getItem("redirect") == null) {
+  localStorage.setItem("redirect", false);
+}
 
 document.getElementById("search-form").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -166,12 +204,17 @@ if (window.location.pathname.endsWith("artists.html")) {
   });
 }
 
-if (
-  window.location.pathname.endsWith("home.html") &&
-  localStorage.getItem("redirect") == "false"
-) {
-  if (JSON.parse(localStorage.getItem("albums")).length) {
+if (window.location.pathname.endsWith("home.html")) {
+  if (
+    localStorage.getItem("albums") &&
+    JSON.parse(localStorage.getItem("albums")).length
+  ) {
     App.getCarrousel();
+
+    if (JSON.parse(localStorage.getItem("redirect")) !== false) {
+      localStorage.setItem("redirect", false);
+    }
+
     document.querySelectorAll(".album-item").forEach((el) => {
       el.addEventListener("click", (e) => {
         e.preventDefault();
@@ -199,34 +242,20 @@ if (
 }
 
 if (
-  window.location.pathname.endsWith("home.html") &&
-  localStorage.getItem("redirect") !== "false"
-) {
-  App.getCarrousel();
-  document.querySelectorAll(".album-item").forEach((el) => {
-    el.addEventListener("click", (e) => {
-      e.preventDefault();
-      App.moveCarrousel(
-        e.target.id,
-        Number(e.target.parentElement.id),
-        e.target.src
-      );
-    });
-  });
-  localStorage.setItem("redirect", false);
-}
-
-if (
+  localStorage.getItem("albums") &&
   JSON.parse(localStorage.getItem("albums")).length &&
   window.location.pathname.endsWith("home.html")
 ) {
   document.getElementsByClassName("delete")[0].addEventListener("click", () => {
     let idx = Number(localStorage.getItem("currentAlbum"));
     let albums = JSON.parse(localStorage.getItem("albums"));
+    let tracks = JSON.parse(localStorage.getItem("tracks"));
     for (let i = 0; i < albums.length; i++) {
       if (i == idx) {
         albums.splice(i, 1);
+        tracks.splice(i, 1);
         localStorage.setItem("albums", JSON.stringify(albums));
+        localStorage.setItem("tracks", JSON.stringify(tracks));
         break;
       }
     }

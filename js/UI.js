@@ -24,10 +24,12 @@ export const UIController = (function () {
         item.artists.forEach((artist) => {
           singersArr.push(artist.name);
         });
+
         let singers = singersArr.toString();
         let picture = item.images.find((el) => el.width == 300);
         if (picture == undefined) continue;
         let year = item.release_date.slice(0, 4);
+
         html = `
           <div class="item-box-albums">
               <img src="${picture.url}" alt="Album cover">
@@ -43,6 +45,7 @@ export const UIController = (function () {
           `;
         displayResultDiv.insertAdjacentHTML("beforeend", html);
       }
+
       let headerArtist = `
       <div class="header">
         <h1>Artists</h1>
@@ -56,6 +59,7 @@ export const UIController = (function () {
           (el) => el.width == 300 || el.width == 320
         );
         if (picture == undefined) continue;
+
         html = `
             <div  class="item-box-artists">
                 <img src="${picture.url}" alt="Artist's image">
@@ -67,11 +71,12 @@ export const UIController = (function () {
           `;
         displayResultDiv.insertAdjacentHTML("beforeend", html);
       }
+
       document.querySelectorAll(".bi").forEach((el) => {
         el.addEventListener("click", (e) => {
           e.preventDefault();
           let isAlbum = e.target.classList[2] == "album";
-          App.getItems(e.target.id, isAlbum);
+          App.saveItems(e.target.id, isAlbum);
         });
       });
     }
@@ -81,8 +86,12 @@ export const UIController = (function () {
     let html;
     let displayResultDiv = document.getElementById("albums-list");
     let idx = 0;
-    if (localStorage.getItem("albums")) {
+    if (
+      localStorage.getItem("albums") &&
+      JSON.parse(localStorage.getItem("albums").length)
+    ) {
       let albums = JSON.parse(localStorage.getItem("albums"));
+
       for (let album of albums) {
         let singersArr = [];
         album.artists.forEach((artist) => {
@@ -92,6 +101,7 @@ export const UIController = (function () {
         let picture = album.images.find((el) => el.width == 300);
         if (picture == undefined) continue;
         let year = album.release_date.slice(0, 4);
+
         html = `
           <div class="item-box">
               <img src="${picture.url}" alt="Album cover">
@@ -143,12 +153,15 @@ export const UIController = (function () {
   const _displaySavedArtists = () => {
     let html;
     let albumsDiv;
+    let artistsAlbums;
     let displayResultDiv = document.getElementById("artists-list");
 
-    if (JSON.parse(localStorage.getItem("artists")).length) {
+    if (
+      localStorage.getItem("artists") &&
+      JSON.parse(localStorage.getItem("artists")).length
+    ) {
       let albums = JSON.parse(localStorage.getItem("albums"));
       let artists = JSON.parse(localStorage.getItem("artists"));
-      let artistsAlbums;
 
       for (let artist of artists) {
         artistsAlbums = [];
@@ -308,6 +321,7 @@ export const UIController = (function () {
     for (let album of albums) {
       let picture = album.images.find((el) => el.width == 300);
       if (picture == undefined) continue;
+
       html = `
         <div class="album-item hidden" id="${storageIdx}">
           <img src="${picture.url}" id="${album.id}" alt="${album.name}" title="${album.name}">
@@ -457,10 +471,7 @@ export const UIController = (function () {
           if (localStorage.getItem("isPlaying") == "false") {
             song = new Audio(tracks[i].preview_url);
             song.play();
-            localStorage.setItem(
-              "isPlaying",
-              JSON.stringify({ idx: i, song: song })
-            );
+            localStorage.setItem("isPlaying", JSON.stringify({ idx: i }));
           } else {
             let audioInfo = JSON.parse(localStorage.getItem("isPlaying"));
             song.pause();
@@ -469,7 +480,7 @@ export const UIController = (function () {
 
             song = new Audio(tracks[i].preview_url);
             song.play();
-            localStorage.setItem("isPlaying", JSON.stringify({ idx: i, song }));
+            localStorage.setItem("isPlaying", JSON.stringify({ idx: i }));
           }
 
           setTimeout(() => {
