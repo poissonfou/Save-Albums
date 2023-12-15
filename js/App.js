@@ -167,12 +167,10 @@ export const App = (function (UIController, APIController) {
   };
 })(UIController, APIController);
 
-if (!localStorage.getItem("token")) {
-  (async function () {
-    let token = await App.requestToken();
-    localStorage.setItem("token", token);
-  })();
-}
+(async function () {
+  let token = await App.requestToken();
+  localStorage.setItem("token", token);
+})();
 
 let delay = 1000 * 60 * 60;
 setInterval(async () => {
