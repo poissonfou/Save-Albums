@@ -55,30 +55,16 @@ export const App = (function (UIController, APIController) {
       hidden: "album-item hidden",
     };
 
+    let currentlySelected = document.getElementsByClassName("focused-album")[0];
+    if (currentlySelected.id == id) return;
+
     let elements = document.querySelectorAll(".album-item");
 
     document.getElementsByClassName("title-display")[0].classList =
       "hidden-title";
 
     let title = elements[parentIdx].children.item(1);
-    let titleLength = title.textContent.length;
     title.classList = "title-display";
-
-    if (titleLength <= 5) {
-      title.style.marginLeft = "6.3rem";
-    }
-    if (titleLength >= 5 && titleLength <= 15) {
-      title.style.marginLeft = "4rem";
-    }
-    if (titleLength >= 15) {
-      title.style.marginLeft = "1.5rem";
-    }
-    if (titleLength >= 19) {
-      title.style.marginLeft = "0.5rem";
-    }
-    if (titleLength >= 22) {
-      title.classList.add("truncate-title");
-    }
 
     for (let i = parentIdx - 4; i <= parentIdx + 4; i++) {
       if (!elements[i]) continue;
@@ -87,9 +73,15 @@ export const App = (function (UIController, APIController) {
       }
       if (i == parentIdx + 1 || i == parentIdx - 1) {
         elements[i].classList = classSets.next_album;
+        if (i == parentIdx + 1) {
+          elements[i].classList.add("adjust-position-next");
+        }
       }
       if (i == parentIdx + 2 || i == parentIdx - 2) {
         elements[i].classList = classSets.last_album;
+        if (i == parentIdx + 2) {
+          elements[i].classList.add("adjust-position-last");
+        }
       }
       if (i == parentIdx + 3 || i == parentIdx - 3) {
         elements[i].classList = classSets.hidden;
@@ -182,6 +174,13 @@ if (localStorage.getItem("redirect") == null) {
   localStorage.setItem("redirect", false);
 }
 
+document
+  .getElementsByClassName("bi-search")[0]
+  .addEventListener("click", () => {
+    let input = document.getElementById("search-input");
+    App.sendSearch(input.value, false, window.location.pathname);
+  });
+
 document.getElementById("search-form").addEventListener("submit", (e) => {
   e.preventDefault();
   let input = document.getElementById("search-input");
@@ -263,3 +262,122 @@ if (
     document.getElementById("tracks-delete").classList.add("hidden");
   }
 }
+
+if (window.innerWidth < "750") {
+  document.getElementById("header").firstElementChild.innerHTML =
+    '<img class="menu" src="./hamburger-menu.svg" alt="hamburguer-dropdown" />';
+
+  let html = `
+    <div>
+      <ul class="popup-menu">
+       <li>
+        <a href="./home.html">
+          <h3>Home</h3>
+        </a>
+       </li>
+       <li>
+        <a href="./albums.html">
+         <h3>Albums</h3>
+        </a>
+       </li>
+       <li>
+        <a href="./artists.html">
+         <h3>Artists</h3>
+        </a>
+       </li>
+      </ul>
+    </div>
+  `;
+
+  document
+    .getElementsByClassName("menu")[0]
+    .addEventListener("click", (event) => {
+      console.log(event.target.parentElement.children.length);
+      if (event.target.parentElement.children.length == 1) {
+        event.target.parentElement.insertAdjacentHTML("beforeend", html);
+      } else {
+        event.target.parentElement.innerHTML =
+          '<img class="menu" src="./hamburger-menu.svg" alt="hamburguer-dropdown" />';
+      }
+    });
+}
+
+if (window.innerWidth > "800") {
+  document.getElementById("header").firstElementChild.innerHTML = `
+  <div>
+    <a href="./home.html">
+      <h1>Home</h1>
+    </a>
+  </div>
+  <div>
+   <a href="./albums.html">
+      <h1>Albums</h1>
+   </a>
+  </div>
+  <div>
+  <a href="./artists.html">
+      <h1>Artists</h1>
+  </a>
+  </div>`;
+}
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth < "750") {
+    document.getElementById("header").firstElementChild.innerHTML =
+      '<img class="menu" src="./hamburger-menu.svg" alt="hamburguer-dropdown" />';
+
+    let html = `
+      <div>
+        <ul class="popup-menu">
+         <li>
+          <a href="./home.html">
+            <h3>Home</h3>
+          </a>
+         </li>
+         <li>
+          <a href="./albums.html">
+           <h3>Albums</h3>
+          </a>
+         </li>
+         <li>
+          <a href="./artists.html">
+           <h3>Artists</h3>
+          </a>
+         </li>
+        </ul>
+      </div>
+    `;
+
+    document
+      .getElementsByClassName("menu")[0]
+      .addEventListener("click", (event) => {
+        console.log(event.target.parentElement.children.length);
+        if (event.target.parentElement.children.length == 1) {
+          console.log("hereee");
+          event.target.parentElement.insertAdjacentHTML("beforeend", html);
+        } else {
+          event.target.parentElement.innerHTML =
+            '<img class="menu" src="./hamburger-menu.svg" alt="hamburguer-dropdown" />';
+        }
+      });
+  }
+
+  if (window.innerWidth > "800") {
+    document.getElementById("header").firstElementChild.innerHTML = `
+    <div>
+      <a href="./home.html">
+        <h1>Home</h1>
+      </a>
+    </div>
+    <div>
+     <a href="./albums.html">
+        <h1>Albums</h1>
+     </a>
+    </div>
+    <div>
+    <a href="./artists.html">
+        <h1>Artists</h1>
+    </a>
+    </div>`;
+  }
+});

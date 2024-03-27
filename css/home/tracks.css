@@ -1,43 +1,60 @@
 .tracks {
   background-color: rgb(255, 255, 255);
-  position: absolute;
-  top: 90%;
-  width: 55rem;
-  height: fit-content;
-  margin-left: 15rem;
+  margin-bottom: 0.5em;
   border-radius: 5px;
   box-shadow: 5px 5px 5rem black;
-  padding-top: 0.5rem;
+  padding: 0.5em 0.5em 0.1em 0.5em;
+}
+
+.tracks-container {
+  margin: 0em 15em;
+}
+
+@media (max-width: 1000px) {
+  .tracks-container {
+    margin-left: 10em;
+  }
+}
+
+@media (max-width: 900px) {
+  .tracks {
+    border-radius: 0px;
+    margin-bottom: 0em;
+  }
+
+  .tracks-container {
+    margin-left: 0em;
+    width: 100%;
+  }
 }
 
 .tracks-delete {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  width: 68rem;
+  margin-bottom: 0.5em;
+  padding: 0em 0.5em;
 }
 
 .credit {
   display: flex;
-  flex-direction: row;
-  margin-top: -0.5rem;
 }
 
 .credit i {
-  margin-top: 1rem;
+  margin-top: 0.1rem;
   margin-left: 0.5rem;
+  background-color: transparent;
 }
 
 .delete {
   background-color: red;
   color: white;
   font-family: "Vina Sans", "sans-serif";
-  font-size: 1.5rem;
-  height: 2.5rem;
-  width: 6rem;
+  font-size: 1.3rem;
+  height: 2em;
+  padding: 0.5em 1em;
+  margin-top: 0.5em;
   border: none;
   border-radius: 5px;
-  margin-left: 15rem;
 }
 
 .delete:hover {
@@ -45,7 +62,7 @@
 }
 
 .bi-explicit {
-  margin-top: 1.6rem;
+  margin-top: 1.1rem;
   margin-left: 0.5rem;
 }
 
@@ -56,7 +73,7 @@
   z-index: 10;
   font-size: 3rem;
   margin-left: 1rem;
-  margin-top: 0.5rem;
+  margin-top: -0.2em;
 }
 
 .bi-spotify {
@@ -77,32 +94,42 @@
 }
 
 .singers {
+  margin: 0;
+  margin-left: 0.5em;
   color: red;
-  margin-top: -1.5rem;
-  margin-left: 6rem;
+}
+
+.track-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
 }
 
 .title-track {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 0;
-  margin-left: 0.5rem;
+  flex-direction: column;
 }
 
-.title-track div {
+.title-track div:first-child {
   display: flex;
-  flex-direction: row;
+}
+
+.name-duration {
+  display: flex;
 }
 
 .title-track p {
   font-size: 1.3rem;
-  margin-top: 1.4rem;
+  height: 1em;
+  margin: 0;
+  margin-top: 0.8rem;
   margin-left: 0.5rem;
 }
 
 .title-track h2 {
+  margin: 0;
   margin-left: 0.5rem;
+  margin-top: 0.5em;
 }
 
 .spotify-link {

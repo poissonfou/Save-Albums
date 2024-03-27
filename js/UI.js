@@ -88,7 +88,7 @@ export const UIController = (function () {
     let idx = 0;
     if (
       localStorage.getItem("albums") &&
-      JSON.parse(localStorage.getItem("albums").length)
+      JSON.parse(localStorage.getItem("albums")).length
     ) {
       let albums = JSON.parse(localStorage.getItem("albums"));
 
@@ -104,6 +104,7 @@ export const UIController = (function () {
 
         html = `
           <div class="item-box">
+          <div>
               <img src="${picture.url}" alt="Album cover">
               <div class="info">
                 <div>
@@ -112,12 +113,12 @@ export const UIController = (function () {
                 </div>
                <p class="artists-names" title="${singers}">${singers}</p>
               </div>
+            </div>
              <div class="redirect">
-               <div class="button-home">
-                 <button class="${album.id} ${picture.url}" id="${idx}">Go to album</button>
-               </div>
+               <button class="${album.id} ${
+          picture.url
+        } ${"button-home"}" id="${idx}">Go to album</button>
                <div class="spotify-link">
-                <h4>Listen on</h4>
                 <i class="bi bi-spotify" id=${album.external_urls.spotify}></i>
                </div>
              </div>
@@ -204,15 +205,16 @@ export const UIController = (function () {
              </div>
               <div class="buttons">
                <div class="show-albums">
-                <h4>See albums</h4>
-                <i class="bi bi-caret-down"></i>
-                <i class="bi bi-caret-up hidden"></i>
+                 <h4>Albums</h4>
+                 <i class="bi bi-caret-down"></i>
+                 <i class="bi bi-caret-up hidden"></i>
                </div>
-               <div class="spotify-link">
-                <h4>Listen on</h4>
-                <i class="bi bi-spotify" id=${artist.external_urls.spotify}></i>
+                <div>
+                 <button class="delete" id="${artist.name}">Delete</button>
+                  <i class="bi bi-spotify spotify-link" id=${
+                    artist.external_urls.spotify
+                  }></i>
                 </div>
-                <button class="delete" id="${artist.name}">Delete</button>
               </div>
           </div>
           <div class="albums hidden">
@@ -344,24 +346,7 @@ export const UIController = (function () {
     elements[middle].classList.add("focused-album");
 
     let title = elements[middle].children.item(1);
-    let titleLength = title.textContent.length;
     title.classList = "title-display";
-
-    if (titleLength <= 5) {
-      title.style.marginLeft = "6.3rem";
-    }
-    if (titleLength >= 5 && titleLength <= 15) {
-      title.style.marginLeft = "4rem";
-    }
-    if (titleLength >= 15) {
-      title.style.marginLeft = "1.5rem";
-    }
-    if (titleLength >= 19) {
-      title.style.marginLeft = "0.5rem";
-    }
-    if (titleLength >= 21) {
-      title.classList.add("truncate-title");
-    }
 
     if (elements.length == 1) {
       elements[middle].style.marginLeft = "17rem";
@@ -374,12 +359,17 @@ export const UIController = (function () {
     for (let i = middle - 2; i <= middle + 2; i++) {
       if (!elements[i]) continue;
       elements[i].classList.remove("hidden");
-      elements[i].classList.add("displayed");
       if (i == middle) continue;
       if (i == middle - 1 || i == middle + 1) {
+        if (i == middle + 1) {
+          elements[i].classList.add("adjust-position-next");
+        }
         elements[i].classList.add("next-album");
       }
       if (i == middle - 2 || i == middle + 2) {
+        if (i == middle + 2) {
+          elements[i].classList.add("adjust-position-last");
+        }
         elements[i].classList.add("last-album");
       }
     }
@@ -426,7 +416,7 @@ export const UIController = (function () {
       }
 
       html = `
-      <div>
+      <div class="track-item">
         <div class="title-track">
           <div>
            ${
@@ -438,16 +428,19 @@ export const UIController = (function () {
                : (isPlayable = "")
            }
            <img class="album-img" src=${albumImg}>
-           <h2 title="${track.name}">${track.name}</h2>
-           <p> - ${duration.getMinutes()}:${seconds}</p>
+           <div>
+              <div class="name-duration"> 
+                <h2 title="${track.name}">${track.name}</h2>
+                <p> - ${duration.getMinutes()}:${seconds}</p>
+              </div>
+              <h3 title="${singers}" class="singers">${singers}</h3>
+           </div>
            ${track.explicit ? `<i class="bi bi-explicit"></i>` : ""}
           </div>
-          <div class="spotify-link">
-           <i class="bi bi-spotify" id=${track.external_urls.spotify}></i>
-          </div>
         </div>
-        <h3 title="${singers}" class="singers">${singers}</h3>
-        
+        <div class="spotify-link">
+           <i class="bi bi-spotify" id=${track.external_urls.spotify}></i>
+        </div>
       </div>
       `;
       divTracks.insertAdjacentHTML("beforeend", html);

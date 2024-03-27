@@ -1,13 +1,43 @@
+#main-section {
+  text-align: center;
+}
+
+#main-section section {
+  margin: 0 15em;
+  text-align: left;
+}
+
+@media (max-width: 1150px) {
+  #main-section section {
+    margin: 0em 9em;
+  }
+}
+
+@media (max-width: 1000px) {
+  #main-section section {
+    margin: 0em 5em;
+  }
+}
+
 .albums {
+  display: flex;
+  flex-direction: column;
   background-color: rgb(255, 255, 255);
-  position: absolute;
-  top: 45%;
-  width: 60rem;
-  height: fit-content;
-  margin-left: 12rem;
   border-radius: 5px;
   box-shadow: 5px 5px 5rem black;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 0.5em;
+  margin-bottom: 0.5em;
+}
+
+@media (max-width: 900px) {
+  .albums {
+    margin-bottom: 0em;
+    border-radius: 0px;
+  }
+
+  #main-section section {
+    margin: 0em 0em;
+  }
 }
 
 .empty-msg {
@@ -18,38 +48,38 @@
 
 .item-box {
   display: flex;
-  flex-direction: row;
-  font-size: 2rem;
-  margin-top: 0.5rem;
-  margin-left: 0.5rem;
+  justify-content: space-between;
+  margin-top: 0rem;
+  margin-bottom: 0.2em;
 }
 
-.item-box img {
+.item-box div:first-child {
+  display: flex;
+}
+
+.item-box div img {
   margin-right: 0.7rem;
-  width: 150px;
-  height: 150px;
+  width: 8em;
+  height: 8em;
   object-fit: cover;
 }
 
 .info {
   display: flex;
-  flex-direction: column;
 }
 
-.info div {
+.item-box div .info div {
   display: flex;
-  flex-direction: row;
 }
 
-.info div p:nth-child(1) {
-  width: 12rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+.info div p:first-child {
+  width: 10em;
+  font-size: 1.8rem;
 }
 
-.info div p:nth-child(2) {
-  margin-left: 0.5rem;
+.info div p:last-child {
+  margin-top: 1.5em;
+  font-size: 1.5rem;
 }
 
 .artists-names {
@@ -59,35 +89,24 @@
 }
 
 .redirect {
-  margin-left: 15rem;
   margin-top: 3rem;
   display: flex;
-  flex-direction: row;
 }
 
-.spotify-link,
-.button-home {
+.spotify-link {
   display: flex;
-  flex-direction: row;
 }
 
 .spotify-link {
   margin-top: 0.3rem;
 }
 
-.spotify-link h4 {
-  margin-top: 0;
-  margin-right: 0.5rem;
-  font-size: 1.5rem;
-}
-
-.spotify-link i {
+.spotify-link {
   color: #1ed760;
   font-size: 2rem;
-  margin-top: -0.2rem;
 }
 
-.button-home button {
+.button-home {
   background-color: red;
   color: white;
   height: 2.5rem;
@@ -96,10 +115,80 @@
   border-radius: 5px;
   font-family: "Vina Sans", "sans-serif";
   font-size: 1rem;
-  margin-right: 1rem;
+  margin-right: 0.8rem;
+  margin-top: -0.2em;
 }
 
 .spotify-link i:hover,
-.button-home button:hover {
+.button-home:hover {
   cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .item-box div img {
+    width: 6em;
+    height: 6em;
+  }
+
+  .info div p:first-child {
+    width: 5em;
+  }
+
+  .item-box div .artists-names {
+    font-size: 1.2rem;
+  }
+
+  .info {
+    margin-top: -0.7em;
+  }
+
+  .info div p:first-child {
+    font-size: 1.5rem;
+  }
+
+  .info div p:last-child {
+    margin-top: 1.5em;
+    font-size: 1.2rem;
+  }
+
+  .redirect {
+    margin-top: 2rem;
+  }
+
+  .button-home {
+    font-size: 0.8rem;
+    height: 2rem;
+    width: 5.5rem;
+  }
+
+  .spotify-link i {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .item-box div img {
+    width: 4em;
+    height: 4em;
+  }
+
+  .info {
+    margin-top: -0.4em;
+  }
+
+  .info div p:first-child {
+    font-size: 1.2rem;
+  }
+
+  .info div p:last-child {
+    font-size: 1rem;
+  }
+
+  .item-box div .artists-names {
+    font-size: 1rem;
+  }
+
+  .redirect {
+    margin-top: 1rem;
+  }
 }

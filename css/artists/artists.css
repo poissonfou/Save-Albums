@@ -1,13 +1,41 @@
+#main-section {
+  text-align: center;
+}
+
+#main-section section {
+  margin: 0 15em;
+  text-align: left;
+}
+
+@media (max-width: 1150px) {
+  #main-section section {
+    margin: 0em 9em;
+  }
+}
+
+@media (max-width: 1000px) {
+  #main-section section {
+    margin: 0em 5em;
+  }
+}
+
 .artists {
   background-color: rgb(255, 255, 255);
-  position: absolute;
-  top: 45%;
-  width: 60rem;
-  height: fit-content;
-  margin-left: 12rem;
   border-radius: 5px;
   box-shadow: 5px 5px 5rem black;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 0.5em;
+  margin-bottom: 0.5em;
+}
+
+@media (max-width: 900px) {
+  .artists {
+    margin-bottom: 0em;
+    border-radius: 0px;
+  }
+
+  #main-section section {
+    margin: 0em 0em;
+  }
 }
 
 .empty-msg {
@@ -20,31 +48,33 @@
 .item-box div:first-child {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   font-size: 2rem;
   margin-top: 0.5rem;
   margin-left: 0.5rem;
 }
 
-.item-box {
-  justify-content: space-between;
-}
-
 .item-box img {
   margin-right: 0.7rem;
-  width: 150px;
-  height: 150px;
+  width: 5em;
+  height: 5em;
   object-fit: cover;
+  border: black 0.5px solid;
 }
 
 .item-box p {
-  margin-top: 3rem;
+  width: 5em;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  text-wrap: nowrap;
+  margin-top: 3.5rem;
 }
 
 .buttons {
   display: flex;
-  flex-direction: row;
-  margin-right: 3rem;
-  margin-top: 3.3rem;
+  justify-content: space-between;
+  width: 15em;
+  margin-top: 4rem;
 }
 
 .delete {
@@ -55,61 +85,57 @@
   height: 2.5rem;
   width: 6rem;
   border: none;
-  border-radius: 5px;
-  margin-left: 15rem;
+  border-radius: 2px;
+  margin-top: 0em;
 }
 
 .delete:hover {
   cursor: pointer;
 }
 
-.spotify-link,
 .show-albums {
   display: flex;
-  flex-direction: row;
-}
-
-.show-albums {
   margin-right: 1rem;
 }
 
 .show-albums i {
   margin-left: -0.5rem;
-  margin-top: -0.2rem;
+  margin-top: -1rem;
 }
 
-.spotify-link {
-  margin-top: 0.5rem;
-}
-
-.spotify-link h4,
 .show-albums h4 {
   margin-top: 0;
   margin-right: 0.5rem;
   font-size: 1.5rem;
 }
 
-.spotify-link i {
-  color: #1ed760;
-  font-size: 2rem;
-  margin-top: -0.2rem;
+.buttons div:last-child {
+  text-align: center;
 }
 
-.spotify-link i:hover,
+.spotify-link {
+  color: #1ed760;
+  font-size: 2rem;
+  padding: 0;
+}
+
+.spotify-link:hover,
 .show-albums i:hover {
   cursor: pointer;
 }
 
 .albums {
-  margin-top: 1rem;
-  margin-left: 15rem;
+  margin: 0em 6.7em;
 }
 
 .album {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  width: 30rem;
+}
+
+.album div {
+  display: flex;
+  align-items: center;
 }
 
 .album img {
@@ -119,7 +145,6 @@
 
 .album p {
   font-size: 1.5rem;
-  margin-top: 0rem;
   margin-left: 1rem;
 }
 
@@ -153,4 +178,76 @@
 .no-albums button {
   margin-top: 0;
   margin-left: 2rem;
+}
+
+@media (max-width: 800px) {
+  .item-box img {
+    width: 4em;
+    height: 4em;
+  }
+
+  .item-box p {
+    margin-top: 1.7em;
+    font-size: 1.7rem;
+  }
+
+  .buttons {
+    margin-top: 1.5em;
+  }
+
+  .albums {
+    margin: 0em 3em;
+  }
+
+  .album img {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .item-box img {
+    width: 3em;
+    height: 3em;
+  }
+
+  .item-box p {
+    margin-top: 1.7em;
+    font-size: 1.3rem;
+  }
+
+  .buttons {
+    margin-top: 1em;
+    justify-content: unset;
+  }
+
+  .show-albums h4 {
+    font-size: 1.3rem;
+  }
+
+  .show-albums i {
+    margin-top: -0.4em;
+    font-size: 1.5rem;
+  }
+
+  .delete {
+    height: 2em;
+    width: 4em;
+    font-size: 1.2rem;
+    margin-left: -0.6em;
+  }
+
+  .albums {
+    margin: 0em 3em;
+  }
+
+  .album img {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .button-home button {
+    height: 2em;
+    margin-top: -0.8em;
+  }
 }
