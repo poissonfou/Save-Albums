@@ -32,13 +32,15 @@ export const UIController = (function () {
 
         html = `
           <div class="item-box-albums">
-              <img src="${picture.url}" alt="Album cover">
-              <div class="info">
-                <div>
-                 <p title="${item.name}">${item.name}</p>
-                 <p>(${year})</p>
+              <div class="content">
+               <img src="${picture.url}" alt="Album cover">
+               <div class="info">
+                  <div>
+                  <p title="${item.name}">${item.name}</p>
+                  <p>(${year})</p>
+                  </div>
+                 <p class="artists-names" title="${singers}">${singers}</p>
                 </div>
-               <p class="artists-names" title="${singers}">${singers}</p>
               </div>
               <i class="bi bi-plus-circle album" id="${item.id}"></i>
           </div>
@@ -62,8 +64,10 @@ export const UIController = (function () {
 
         html = `
             <div  class="item-box-artists">
-                <img src="${picture.url}" alt="Artist's image">
-                <p title="${item.name}">${item.name}</p>
+                <div>
+                  <img src="${picture.url}" alt="Artist's image">
+                  <p title="${item.name}">${item.name}</p>
+                </div>
                 <div>
                   <i class="bi bi-plus-circle artist" id="${item.id}"></i>
                 </div>
@@ -312,9 +316,11 @@ export const UIController = (function () {
       let input = document.getElementById("main-search-input");
       App.sendSearch(input.value, true, previous);
     });
+    main.classList = "container";
   };
 
   const _loadAlbumsCarrousel = () => {
+    let main = document.getElementById("main-section");
     let html;
     let carrouselDiv = document.getElementById("albums-carrousel");
     let albums = JSON.parse(localStorage.getItem("albums"));
@@ -348,14 +354,6 @@ export const UIController = (function () {
     let title = elements[middle].children.item(1);
     title.classList = "title-display";
 
-    if (elements.length == 1) {
-      elements[middle].style.marginLeft = "17rem";
-    }
-
-    if (elements.length == 2 || elements.length == 3) {
-      carrouselDiv.style.paddingLeft = "7rem";
-    }
-
     for (let i = middle - 2; i <= middle + 2; i++) {
       if (!elements[i]) continue;
       elements[i].classList.remove("hidden");
@@ -378,6 +376,7 @@ export const UIController = (function () {
     let img = elements[middle].children.item(0).getAttribute("src");
 
     localStorage.setItem("currentAlbum", elements[middle].id);
+    main.classList = "";
 
     return {
       id,

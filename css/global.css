@@ -11,15 +11,19 @@ body {
   font-size: 5rem;
 }
 
+.no-result {
+  font-size: 4rem;
+  text-align: center;
+}
+
 @media (max-width: 600px) {
   .page-title {
     font-size: 4rem;
   }
-}
 
-.no-result {
-  font-size: 3rem;
-  margin-left: 19rem;
+  .no-result {
+    font-size: 3rem;
+  }
 }
 
 .hidden {

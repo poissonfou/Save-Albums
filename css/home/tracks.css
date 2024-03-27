@@ -40,7 +40,7 @@
 }
 
 .credit i {
-  margin-top: 0.1rem;
+  margin-top: 1rem;
   margin-left: 0.5rem;
   background-color: transparent;
 }
@@ -51,7 +51,7 @@
   font-family: "Vina Sans", "sans-serif";
   font-size: 1.3rem;
   height: 2em;
-  padding: 0.5em 1em;
+  padding: 0em 1em;
   margin-top: 0.5em;
   border: none;
   border-radius: 5px;
@@ -62,12 +62,20 @@
 }
 
 .bi-explicit {
-  margin-top: 1.1rem;
+  margin-top: 1rem;
   margin-left: 0.5rem;
+  color: red;
 }
 
 .bi-pause,
 .bi-play-fill {
+  color: red;
+  background-color: white;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  width: 2rem;
+  height: 2.15rem;
+  padding-top: 0.5em;
   background-color: transparent;
   position: absolute;
   z-index: 10;
@@ -118,6 +126,12 @@
   display: flex;
 }
 
+.name-duration h2 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .title-track p {
   font-size: 1.3rem;
   height: 1em;
@@ -148,8 +162,6 @@
 #no-album-box {
   display: flex;
   flex-direction: column;
-  position: relative;
-  margin-left: 15rem;
 }
 
 #no-album-box h1 {
@@ -159,17 +171,25 @@
 
 #no-album-box button {
   border: none;
-  border-radius: 5px;
-  box-shadow: -5px -5px 0rem red;
-  height: 3rem;
+  background-color: red;
+  color: white;
+  border-radius: 3px;
+  padding: 1em;
   font-family: "Vina Sans", "sans-serif";
   font-size: 1.5rem;
-  background-color: rgb(247, 250, 245);
-  transition: 1s;
 }
 
 #no-album-box button:hover {
   cursor: pointer;
-  background-color: rgb(243, 225, 225);
-  transition: 1s;
+}
+
+@media (max-width: 675px) {
+  #no-album-box h1 {
+    color: red;
+    font-size: 4rem;
+  }
+
+  #no-album-box button {
+    padding: 0.8em;
+  }
 }

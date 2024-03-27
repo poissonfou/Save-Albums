@@ -1,20 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1em;
+  margin: 0em 5em;
+}
+
+.main-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .main-search h1 {
-  margin-bottom: 0.5rem;
-  margin-left: 36rem;
   font-size: 4rem;
   color: red;
+  margin-bottom: 0.5em;
 }
 
 .main-search input {
-  width: 70%;
-  height: 2.8rem;
   border-radius: 5px;
-  margin-left: 12rem;
-  margin-top: 0rem;
   box-shadow: 5px 0px 1rem black;
-  padding-top: 0.5rem;
   font-size: 1.5rem;
-  padding-top: 0;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  width: 33em;
 }
 
 .main-search input::placeholder {
@@ -23,39 +33,66 @@
 
 .search-box-result {
   background-color: rgb(255, 255, 255);
-  position: absolute;
-  top: 50%;
-  width: 50rem;
-  height: fit-content;
-  margin-left: 17rem;
   border-radius: 5px;
   box-shadow: 5px 5px 5rem black;
-  padding-bottom: 0.5rem;
+  padding: 1em;
+  width: 50em;
+  margin-bottom: 1em;
 }
 
 .header {
   display: flex;
-  flex-direction: row;
+  align-items: center;
   justify-content: space-around;
 }
 
-.header div {
-  margin-top: 3rem;
+.line {
   background-color: red;
   border-radius: 5px;
   height: 0.1rem;
-  width: 75%;
+  width: 65%;
 }
 
 .header h1 {
   color: red;
   font-size: 3.5rem;
-  margin-left: 0rem;
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
 }
 
 .std-msg {
   font-size: 3rem;
-  margin-left: 13rem;
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .search-box-result {
+    width: 40em;
+  }
+
+  .main-search input {
+    width: 26.5em;
+  }
+}
+
+@media (max-width: 675px) {
+  .search-box-result {
+    width: auto;
+  }
+
+  .main-search input {
+    width: 21em;
+  }
+}
+
+@media (max-width: 550px) {
+  .header h1 {
+    font-size: 3rem;
+  }
+
+  .main-search input {
+    width: 18em;
+  }
+
+  .search-box-result {
+    padding: 0.5em;
+  }
 }

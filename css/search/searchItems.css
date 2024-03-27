@@ -1,67 +1,27 @@
-.item-box-artists,
 .item-box-albums {
   display: flex;
-  flex-direction: row;
-  justify-content: stretch;
+  justify-content: space-between;
+  align-items: center;
   font-size: 2rem;
-  margin-top: 0.5rem;
-  margin-left: 0.5rem;
+  padding-bottom: 0.5em;
 }
 
-.item-box-artists div {
-  margin-top: 3rem;
-}
-
-.item-box-artists img,
 .item-box-albums img {
   margin-right: 0.7rem;
-  width: 150px;
-  height: 150px;
+  width: 5em;
+  height: 5em;
   object-fit: cover;
 }
 
-.item-box-artists i {
-  margin-top: 3rem;
-  margin-left: 20rem;
-}
-
 .item-box-albums i {
-  margin-top: 3rem;
-  margin-left: 15rem;
+  padding-right: 1em;
+  padding-top: 0;
+  margin-bottom: 1em;
+  width: 0.05em;
 }
 
-.item-box-artists i:hover,
 .item-box-albums i:hover {
   cursor: pointer;
-}
-
-.item-box-artists p {
-  width: 12rem;
-  margin-top: 3rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.info {
-  display: flex;
-  flex-direction: column;
-}
-
-.info div {
-  display: flex;
-  flex-direction: row;
-}
-
-.info div p:nth-child(1) {
-  width: 12rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.info div p:nth-child(2) {
-  margin-left: 0.5rem;
 }
 
 .artists-names {
@@ -74,8 +34,66 @@
   white-space: nowrap;
 }
 
-.no-result {
-  font-size: 5rem;
-  margin-left: 16rem;
-  margin-top: 7rem;
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info div {
+  display: flex;
+}
+
+.info div p:first-child {
+  width: 15rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/*artists*/
+.item-box-artists {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2rem;
+  padding-bottom: 0.5em;
+}
+
+.item-box-artists div {
+  display: flex;
+  align-items: center;
+}
+
+.item-box-artists p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.item-box-artists img {
+  margin-right: 0.7rem;
+  width: 5em;
+  height: 5em;
+  object-fit: cover;
+}
+
+.item-box-artists i {
+  padding-right: 1em;
+  padding-top: 0;
+  width: 0.05em;
+}
+
+.item-box-artists i:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 550px) {
+  .item-box-albums {
+    font-size: 1.5rem;
+  }
 }

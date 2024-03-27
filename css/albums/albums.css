@@ -40,12 +40,6 @@
   }
 }
 
-.empty-msg {
-  font-size: 5rem;
-  margin-left: 16rem;
-  margin-top: 7rem;
-}
-
 .item-box {
   display: flex;
   justify-content: space-between;
@@ -95,13 +89,10 @@
 
 .spotify-link {
   display: flex;
+  margin-top: -1.2em;
 }
 
-.spotify-link {
-  margin-top: 0.3rem;
-}
-
-.spotify-link {
+.spotify-link i {
   color: #1ed760;
   font-size: 2rem;
 }
@@ -115,7 +106,7 @@
   border-radius: 5px;
   font-family: "Vina Sans", "sans-serif";
   font-size: 1rem;
-  margin-right: 0.8rem;
+  margin-right: 0.5rem;
   margin-top: -0.2em;
 }
 

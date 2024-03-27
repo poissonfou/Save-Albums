@@ -111,6 +111,8 @@ export const App = (function (UIController, APIController) {
   };
 
   const _getCarrousel = async () => {
+    let main = document.getElementById("main-section");
+    main.classList = "";
     document.getElementById("tracks").classList.remove("hidden");
     let { id, img } = UIController.loadAlbumsCarrousel();
     let savedTracks = JSON.parse(localStorage.getItem("tracks"));
@@ -263,43 +265,41 @@ if (
   }
 }
 
+//change header
+
+const headerPopup = `
+<div class="popup-container">
+  <ul class="popup-menu">
+   <li>
+    <a href="./home.html">
+      <h3>Home</h3>
+    </a>
+   </li>
+   <li>
+    <a href="./albums.html">
+     <h3>Albums</h3>
+    </a>
+   </li>
+   <li>
+    <a href="./artists.html">
+     <h3>Artists</h3>
+    </a>
+   </li>
+  </ul>
+</div>
+`;
+
 if (window.innerWidth < "750") {
   document.getElementById("header").firstElementChild.innerHTML =
-    '<img class="menu" src="./hamburger-menu.svg" alt="hamburguer-dropdown" />';
+    '<i class="bi bi-list" id="menu"></i>';
 
-  let html = `
-    <div>
-      <ul class="popup-menu">
-       <li>
-        <a href="./home.html">
-          <h3>Home</h3>
-        </a>
-       </li>
-       <li>
-        <a href="./albums.html">
-         <h3>Albums</h3>
-        </a>
-       </li>
-       <li>
-        <a href="./artists.html">
-         <h3>Artists</h3>
-        </a>
-       </li>
-      </ul>
-    </div>
-  `;
-
-  document
-    .getElementsByClassName("menu")[0]
-    .addEventListener("click", (event) => {
-      console.log(event.target.parentElement.children.length);
-      if (event.target.parentElement.children.length == 1) {
-        event.target.parentElement.insertAdjacentHTML("beforeend", html);
-      } else {
-        event.target.parentElement.innerHTML =
-          '<img class="menu" src="./hamburger-menu.svg" alt="hamburguer-dropdown" />';
-      }
-    });
+  document.getElementById("menu").addEventListener("click", (event) => {
+    if (event.target.parentElement.children.length == 1) {
+      event.target.parentElement.insertAdjacentHTML("beforeend", headerPopup);
+    } else {
+      document.getElementsByClassName("popup-container")[0].remove();
+    }
+  });
 }
 
 if (window.innerWidth > "800") {
@@ -324,45 +324,16 @@ if (window.innerWidth > "800") {
 window.addEventListener("resize", () => {
   if (window.innerWidth < "750") {
     document.getElementById("header").firstElementChild.innerHTML =
-      '<img class="menu" src="./hamburger-menu.svg" alt="hamburguer-dropdown" />';
+      '<i class="bi bi-list" id="menu"></i>';
 
-    let html = `
-      <div>
-        <ul class="popup-menu">
-         <li>
-          <a href="./home.html">
-            <h3>Home</h3>
-          </a>
-         </li>
-         <li>
-          <a href="./albums.html">
-           <h3>Albums</h3>
-          </a>
-         </li>
-         <li>
-          <a href="./artists.html">
-           <h3>Artists</h3>
-          </a>
-         </li>
-        </ul>
-      </div>
-    `;
-
-    document
-      .getElementsByClassName("menu")[0]
-      .addEventListener("click", (event) => {
-        console.log(event.target.parentElement.children.length);
-        if (event.target.parentElement.children.length == 1) {
-          console.log("hereee");
-          event.target.parentElement.insertAdjacentHTML("beforeend", html);
-        } else {
-          event.target.parentElement.innerHTML =
-            '<img class="menu" src="./hamburger-menu.svg" alt="hamburguer-dropdown" />';
-        }
-      });
-  }
-
-  if (window.innerWidth > "800") {
+    document.getElementById("menu").addEventListener("click", (event) => {
+      if (event.target.parentElement.children.length == 1) {
+        event.target.parentElement.insertAdjacentHTML("beforeend", headerPopup);
+      } else {
+        document.getElementsByClassName("popup-container")[0].remove();
+      }
+    });
+  } else {
     document.getElementById("header").firstElementChild.innerHTML = `
     <div>
       <a href="./home.html">

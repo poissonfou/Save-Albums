@@ -44,6 +44,10 @@
   margin-top: 7rem;
 }
 
+.item-box {
+  padding-right: 0.5em;
+}
+
 .item-box,
 .item-box div:first-child {
   display: flex;
@@ -59,7 +63,6 @@
   width: 5em;
   height: 5em;
   object-fit: cover;
-  border: black 0.5px solid;
 }
 
 .item-box p {
@@ -136,6 +139,7 @@
 .album div {
   display: flex;
   align-items: center;
+  margin-top: 1em;
 }
 
 .album img {
@@ -168,7 +172,7 @@
 }
 
 .no-albums {
-  margin-left: 10rem;
+  margin-left: 0rem;
 }
 
 .no-albums h1 {
