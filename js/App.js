@@ -25,6 +25,9 @@ export const App = (function (UIController, APIController) {
       let tracks = await APIController.getAlbumTracks(album.id, token);
 
       let albums = JSON.parse(localStorage.getItem("albums") || "[]");
+      for (let i = 0; i < albums.length; i++) {
+        if (albums[i].name == album.name) return;
+      }
       albums.push(album);
       localStorage.setItem("albums", JSON.stringify(albums));
 
@@ -34,6 +37,9 @@ export const App = (function (UIController, APIController) {
     } else {
       let artist = await APIController.getArtist(id, token);
       let artists = JSON.parse(localStorage.getItem("artists") || "[]");
+      for (let i = 0; i < artists.length; i++) {
+        if (artists[i].name == artist.name) return;
+      }
       artists.push(artist);
       localStorage.setItem("artists", JSON.stringify(artists));
     }
