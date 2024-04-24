@@ -375,8 +375,18 @@ export const UIController = (function () {
     let id = elements[middle].children.item(0).id;
     let img = elements[middle].children.item(0).getAttribute("src");
 
-    localStorage.setItem("currentAlbum", elements[middle].id);
     main.classList = "";
+
+    elements.forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        App.moveCarrousel(
+          e.target.id,
+          Number(e.target.parentElement.id),
+          e.target.src
+        );
+      });
+    });
 
     return {
       id,

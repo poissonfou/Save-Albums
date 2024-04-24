@@ -20,20 +20,15 @@ export const App = (function (UIController, APIController) {
 
   const _saveItems = async (id, isAlbum) => {
     let token = localStorage.getItem("token");
+    console.log(id, isAlbum);
     if (isAlbum) {
       let album = await APIController.getAlbum(id, token);
-      let tracks = await APIController.getAlbumTracks(album.id, token);
-
       let albums = JSON.parse(localStorage.getItem("albums") || "[]");
       for (let i = 0; i < albums.length; i++) {
         if (albums[i].name == album.name) return;
       }
       albums.push(album);
       localStorage.setItem("albums", JSON.stringify(albums));
-
-      let savedTracks = JSON.parse(localStorage.getItem("tracks") || "[]");
-      savedTracks.push([id, tracks]);
-      localStorage.setItem("tracks", JSON.stringify(savedTracks));
     } else {
       let artist = await APIController.getArtist(id, token);
       let artists = JSON.parse(localStorage.getItem("artists") || "[]");
@@ -99,16 +94,11 @@ export const App = (function (UIController, APIController) {
       }
     }
 
-    localStorage.setItem("currentAlbum", elements[parentIdx].id);
-
-    let savedTracks = JSON.parse(localStorage.getItem("tracks"));
-    console.log(savedTracks);
+    let albums = JSON.parse(localStorage.getItem("albums"));
     let tracks;
-
-    for (let i = 0; i < savedTracks.length; i++) {
-      if (i == parentIdx) {
-        tracks = savedTracks[i][1];
-        console.log(tracks);
+    for (let album of albums) {
+      if (album.id == id) {
+        tracks = album.tracks.items;
         break;
       }
     }
@@ -121,20 +111,32 @@ export const App = (function (UIController, APIController) {
     main.classList = "";
     document.getElementById("tracks").classList.remove("hidden");
     let { id, img } = UIController.loadAlbumsCarrousel();
-    let savedTracks = JSON.parse(localStorage.getItem("tracks"));
+    let albums = JSON.parse(localStorage.getItem("albums"));
     let tracks;
 
-    if (localStorage.getItem("tracks")) {
-      for (let i = 0; i < savedTracks.length; i++) {
-        if (savedTracks[i][0] == id) {
-          tracks = savedTracks[i][1];
-          break;
-        }
+    for (let album of albums) {
+      if (album.id == id) {
+        tracks = album.tracks.items;
+        break;
       }
     }
 
     UIController.loadTracks(tracks, img);
     document.getElementById("tracks-delete").classList.remove("hidden");
+    //deletes album from collection
+    document
+      .getElementsByClassName("delete")[0]
+      .addEventListener("click", () => {
+        let idx = document.getElementsByClassName("focused-album")[0].id;
+        let albums = JSON.parse(localStorage.getItem("albums"));
+        albums.splice(idx, 1);
+        localStorage.setItem("albums", JSON.stringify(albums));
+
+        window.location.href = "home.html";
+      });
+    if (!albums.length) {
+      document.getElementById("tracks-delete").classList.add("hidden");
+    }
   };
 
   const _requestToken = async () => {
@@ -167,6 +169,7 @@ export const App = (function (UIController, APIController) {
   };
 })(UIController, APIController);
 
+//rerequests token
 (async function () {
   let token = await App.requestToken();
   localStorage.setItem("token", token);
@@ -182,6 +185,7 @@ if (localStorage.getItem("redirect") == null) {
   localStorage.setItem("redirect", false);
 }
 
+//events for header search
 document
   .getElementsByClassName("bi-search")[0]
   .addEventListener("click", () => {
@@ -195,6 +199,7 @@ document.getElementById("search-form").addEventListener("submit", (e) => {
   App.sendSearch(input.value, false, window.location.pathname);
 });
 
+//loads saved albums data
 if (window.location.pathname.endsWith("albums.html")) {
   window.addEventListener("load", (e) => {
     e.preventDefault();
@@ -202,6 +207,7 @@ if (window.location.pathname.endsWith("albums.html")) {
   });
 }
 
+//loads saved artists data
 if (window.location.pathname.endsWith("artists.html")) {
   window.addEventListener("load", (e) => {
     e.preventDefault();
@@ -209,6 +215,7 @@ if (window.location.pathname.endsWith("artists.html")) {
   });
 }
 
+//loads home page;
 if (window.location.pathname.endsWith("home.html")) {
   if (
     localStorage.getItem("albums") &&
@@ -219,17 +226,6 @@ if (window.location.pathname.endsWith("home.html")) {
     if (JSON.parse(localStorage.getItem("redirect")) !== false) {
       localStorage.setItem("redirect", false);
     }
-
-    document.querySelectorAll(".album-item").forEach((el) => {
-      el.addEventListener("click", (e) => {
-        e.preventDefault();
-        App.moveCarrousel(
-          e.target.id,
-          Number(e.target.parentElement.id),
-          e.target.src
-        );
-      });
-    });
   } else {
     let carrouselDiv = document.getElementById("albums-carrousel");
     let html = `
@@ -243,31 +239,6 @@ if (window.location.pathname.endsWith("home.html")) {
       App.sendSearch("", false, window.location.pathname);
     });
     document.getElementById("tracks").classList.add("hidden");
-  }
-}
-
-if (
-  localStorage.getItem("albums") &&
-  JSON.parse(localStorage.getItem("albums")).length &&
-  window.location.pathname.endsWith("home.html")
-) {
-  document.getElementsByClassName("delete")[0].addEventListener("click", () => {
-    let idx = Number(localStorage.getItem("currentAlbum"));
-    let albums = JSON.parse(localStorage.getItem("albums"));
-    let tracks = JSON.parse(localStorage.getItem("tracks"));
-    for (let i = 0; i < albums.length; i++) {
-      if (i == idx) {
-        albums.splice(i, 1);
-        tracks.splice(i, 1);
-        localStorage.setItem("albums", JSON.stringify(albums));
-        localStorage.setItem("tracks", JSON.stringify(tracks));
-        break;
-      }
-    }
-    window.location.href = "home.html";
-  });
-  if (!JSON.parse(localStorage.getItem("albums")).length) {
-    document.getElementById("tracks-delete").classList.add("hidden");
   }
 }
 
@@ -295,7 +266,7 @@ const headerPopup = `
 </div>
 `;
 
-if (window.innerWidth < "750") {
+if (window.innerWidth < 750) {
   document.getElementById("header").firstElementChild.innerHTML =
     '<i class="bi bi-list" id="menu"></i>';
 
@@ -308,7 +279,7 @@ if (window.innerWidth < "750") {
   });
 }
 
-if (window.innerWidth > "800") {
+if (window.innerWidth > 800) {
   document.getElementById("header").firstElementChild.innerHTML = `
   <div>
     <a href="./home.html">
@@ -328,7 +299,7 @@ if (window.innerWidth > "800") {
 }
 
 window.addEventListener("resize", () => {
-  if (window.innerWidth < "750") {
+  if (window.innerWidth < 750) {
     document.getElementById("header").firstElementChild.innerHTML =
       '<i class="bi bi-list" id="menu"></i>';
 

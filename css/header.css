@@ -40,8 +40,8 @@ header nav div h1:hover {
   border-radius: 2px;
   padding: 1em;
   z-index: 10;
-  margin-left: -3rem;
-  margin-top: 1.2em;
+  left: 0;
+  top: 1.2em;
 }
 
 .popup-menu li {
