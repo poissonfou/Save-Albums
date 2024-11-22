@@ -8,7 +8,7 @@ export const App = (function (UIController, APIController) {
       UIController.loadSearchEls(previous);
     }
     if (val !== "") {
-      let token = localStorage.getItem("token");
+      let token = sessionStorage.getItem("token");
       let result = await APIController.search(val, token);
       UIController.displaySearch(result);
       history.pushState({}, "Search", "search.html");
@@ -19,23 +19,23 @@ export const App = (function (UIController, APIController) {
   };
 
   const _saveItems = async (id, isAlbum) => {
-    let token = localStorage.getItem("token");
+    let token = sessionStorage.getItem("token");
     if (isAlbum) {
       let album = await APIController.getAlbum(id, token);
-      let albums = JSON.parse(localStorage.getItem("albums") || "[]");
+      let albums = JSON.parse(sessionStorage.getItem("albums") || "[]");
       for (let i = 0; i < albums.length; i++) {
         if (albums[i].name == album.name) return;
       }
       albums.push(album);
-      localStorage.setItem("albums", JSON.stringify(albums));
+      sessionStorage.setItem("albums", JSON.stringify(albums));
     } else {
       let artist = await APIController.getArtist(id, token);
-      let artists = JSON.parse(localStorage.getItem("artists") || "[]");
+      let artists = JSON.parse(sessionStorage.getItem("artists") || "[]");
       for (let i = 0; i < artists.length; i++) {
         if (artists[i].name == artist.name) return;
       }
       artists.push(artist);
-      localStorage.setItem("artists", JSON.stringify(artists));
+      sessionStorage.setItem("artists", JSON.stringify(artists));
     }
   };
 
@@ -93,7 +93,7 @@ export const App = (function (UIController, APIController) {
       }
     }
 
-    let albums = JSON.parse(localStorage.getItem("albums"));
+    let albums = JSON.parse(sessionStorage.getItem("albums"));
     let tracks;
     for (let album of albums) {
       if (album.id == id) {
@@ -110,7 +110,7 @@ export const App = (function (UIController, APIController) {
     main.classList = "";
     document.getElementById("tracks").classList.remove("hidden");
     let { id, img } = UIController.loadAlbumsCarrousel();
-    let albums = JSON.parse(localStorage.getItem("albums"));
+    let albums = JSON.parse(sessionStorage.getItem("albums"));
     let tracks;
 
     for (let album of albums) {
@@ -127,9 +127,9 @@ export const App = (function (UIController, APIController) {
       .getElementsByClassName("delete")[0]
       .addEventListener("click", () => {
         let idx = document.getElementsByClassName("focused-album")[0].id;
-        let albums = JSON.parse(localStorage.getItem("albums"));
+        let albums = JSON.parse(sessionStorage.getItem("albums"));
         albums.splice(idx, 1);
-        localStorage.setItem("albums", JSON.stringify(albums));
+        sessionStorage.setItem("albums", JSON.stringify(albums));
 
         window.location.href = "home.html";
       });
@@ -171,17 +171,17 @@ export const App = (function (UIController, APIController) {
 //rerequests token
 (async function () {
   let token = await App.requestToken();
-  localStorage.setItem("token", token);
+  sessionStorage.setItem("token", token);
 })();
 
 let delay = 1000 * 60 * 60;
 setInterval(async () => {
   let token = await App.requestToken();
-  localStorage.setItem("token", token);
+  sessionStorage.setItem("token", token);
 }, delay);
 
-if (localStorage.getItem("redirect") == null) {
-  localStorage.setItem("redirect", false);
+if (sessionStorage.getItem("redirect") == null) {
+  sessionStorage.setItem("redirect", false);
 }
 
 //events for header search
@@ -217,13 +217,13 @@ if (window.location.pathname.endsWith("artists.html")) {
 //loads home page;
 if (window.location.pathname.endsWith("index.html")) {
   if (
-    localStorage.getItem("albums") &&
-    JSON.parse(localStorage.getItem("albums")).length
+    sessionStorage.getItem("albums") &&
+    JSON.parse(sessionStorage.getItem("albums")).length
   ) {
     App.getCarrousel();
 
-    if (JSON.parse(localStorage.getItem("redirect")) !== false) {
-      localStorage.setItem("redirect", false);
+    if (JSON.parse(sessionStorage.getItem("redirect")) !== false) {
+      sessionStorage.setItem("redirect", false);
     }
   } else {
     let carrouselDiv = document.getElementById("albums-carrousel");

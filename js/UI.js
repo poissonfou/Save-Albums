@@ -91,10 +91,10 @@ export const UIController = (function () {
     let displayResultDiv = document.getElementById("albums-list");
     let idx = 0;
     if (
-      localStorage.getItem("albums") &&
-      JSON.parse(localStorage.getItem("albums")).length
+      sessionStorage.getItem("albums") &&
+      JSON.parse(sessionStorage.getItem("albums")).length
     ) {
-      let albums = JSON.parse(localStorage.getItem("albums"));
+      let albums = JSON.parse(sessionStorage.getItem("albums"));
 
       for (let album of albums) {
         let singersArr = [];
@@ -140,7 +140,7 @@ export const UIController = (function () {
 
       document.querySelectorAll("button").forEach((el) => {
         el.addEventListener("click", (e) => {
-          localStorage.setItem(
+          sessionStorage.setItem(
             "redirect",
             JSON.stringify({
               idx: e.target.id,
@@ -162,11 +162,11 @@ export const UIController = (function () {
     let displayResultDiv = document.getElementById("artists-list");
 
     if (
-      localStorage.getItem("artists") &&
-      JSON.parse(localStorage.getItem("artists")).length
+      sessionStorage.getItem("artists") &&
+      JSON.parse(sessionStorage.getItem("artists")).length
     ) {
-      let albums = JSON.parse(localStorage.getItem("albums"));
-      let artists = JSON.parse(localStorage.getItem("artists"));
+      let albums = JSON.parse(sessionStorage.getItem("albums"));
+      let artists = JSON.parse(sessionStorage.getItem("artists"));
 
       for (let artist of artists) {
         artistsAlbums = [];
@@ -267,7 +267,7 @@ export const UIController = (function () {
 
       for (let i = 0; i < redirectButtons.length; i++) {
         redirectButtons[i].addEventListener("click", (e) => {
-          localStorage.setItem(
+          sessionStorage.setItem(
             "redirect",
             JSON.stringify({
               idx: e.target.id,
@@ -292,7 +292,7 @@ export const UIController = (function () {
           for (let j = 0; j < artists.length; j++) {
             if (artists[j].name == e.target.id) {
               artists.splice(j, 1);
-              localStorage.setItem("artists", JSON.stringify(artists));
+              sessionStorage.setItem("artists", JSON.stringify(artists));
               break;
             }
           }
@@ -323,7 +323,7 @@ export const UIController = (function () {
     let main = document.getElementById("main-section");
     let html;
     let carrouselDiv = document.getElementById("albums-carrousel");
-    let albums = JSON.parse(localStorage.getItem("albums"));
+    let albums = JSON.parse(sessionStorage.getItem("albums"));
     let storageIdx = 0;
 
     for (let album of albums) {
@@ -342,10 +342,10 @@ export const UIController = (function () {
 
     let middle;
     let elements = document.querySelectorAll(".album-item");
-    if (localStorage.getItem("redirect") == "false") {
+    if (sessionStorage.getItem("redirect") == "false") {
       middle = Math.floor(elements.length / 2);
     } else {
-      let albumRedirect = JSON.parse(localStorage.getItem("redirect"));
+      let albumRedirect = JSON.parse(sessionStorage.getItem("redirect"));
       middle = Number(albumRedirect.idx);
     }
 
@@ -395,7 +395,7 @@ export const UIController = (function () {
   };
 
   const _loadTracks = (tracks, albumImg) => {
-    localStorage.setItem("isPlaying", false);
+    sessionStorage.setItem("isPlaying", false);
 
     let html;
     let singersArr;
@@ -470,25 +470,25 @@ export const UIController = (function () {
         play[i].addEventListener("click", () => {
           play[i].classList.add("hidden");
           pause[i].classList.remove("hidden");
-          if (localStorage.getItem("isPlaying") == "false") {
+          if (sessionStorage.getItem("isPlaying") == "false") {
             song = new Audio(tracks[i].preview_url);
             song.play();
-            localStorage.setItem("isPlaying", JSON.stringify({ idx: i }));
+            sessionStorage.setItem("isPlaying", JSON.stringify({ idx: i }));
           } else {
-            let audioInfo = JSON.parse(localStorage.getItem("isPlaying"));
+            let audioInfo = JSON.parse(sessionStorage.getItem("isPlaying"));
             song.pause();
             pause[audioInfo.idx].classList.add("hidden");
             play[audioInfo.idx].classList.remove("hidden");
 
             song = new Audio(tracks[i].preview_url);
             song.play();
-            localStorage.setItem("isPlaying", JSON.stringify({ idx: i }));
+            sessionStorage.setItem("isPlaying", JSON.stringify({ idx: i }));
           }
 
           setTimeout(() => {
             pause[i].classList.add("hidden");
             play[i].classList.remove("hidden");
-            localStorage.setItem("isPlaying", false);
+            sessionStorage.setItem("isPlaying", false);
           }, 30000);
         });
       }
