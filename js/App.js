@@ -217,7 +217,7 @@ if (window.location.pathname.endsWith("artists.html")) {
 //loads home page;
 if (
   window.location.pathname.endsWith("index.html") ||
-  window.location.pathname.endsWith("Save-Albums")
+  window.location.pathname.endsWith("Save-Albums/")
 ) {
   if (
     sessionStorage.getItem("albums") &&
