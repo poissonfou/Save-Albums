@@ -146,7 +146,7 @@ export const UIController = (function () {
               idx: e.target.id,
             })
           );
-          window.location.href = "home.html";
+          window.location.href = "index.html";
         });
       });
     } else {
@@ -273,7 +273,7 @@ export const UIController = (function () {
               idx: e.target.id,
             })
           );
-          window.location.href = "home.html";
+          window.location.href = "index.html";
         });
       }
 
