@@ -20,7 +20,6 @@ export const App = (function (UIController, APIController) {
 
   const _saveItems = async (id, isAlbum) => {
     let token = localStorage.getItem("token");
-    console.log(id, isAlbum);
     if (isAlbum) {
       let album = await APIController.getAlbum(id, token);
       let albums = JSON.parse(localStorage.getItem("albums") || "[]");
@@ -216,7 +215,7 @@ if (window.location.pathname.endsWith("artists.html")) {
 }
 
 //loads home page;
-if (window.location.pathname.endsWith("home.html")) {
+if (window.location.pathname.endsWith("index.html")) {
   if (
     localStorage.getItem("albums") &&
     JSON.parse(localStorage.getItem("albums")).length
@@ -248,7 +247,7 @@ const headerPopup = `
 <div class="popup-container">
   <ul class="popup-menu">
    <li>
-    <a href="./home.html">
+    <a href="./index.html">
       <h3>Home</h3>
     </a>
    </li>
@@ -282,7 +281,7 @@ if (window.innerWidth < 750) {
 if (window.innerWidth > 800) {
   document.getElementById("header").firstElementChild.innerHTML = `
   <div>
-    <a href="./home.html">
+    <a href="./index.html">
       <h1>Home</h1>
     </a>
   </div>
@@ -313,7 +312,7 @@ window.addEventListener("resize", () => {
   } else {
     document.getElementById("header").firstElementChild.innerHTML = `
     <div>
-      <a href="./home.html">
+      <a href="./index.html">
         <h1>Home</h1>
       </a>
     </div>
